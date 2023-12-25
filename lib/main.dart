@@ -16,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main(){
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
-  // yessss gitttgit push -u origin Blood-Donation 111
+  // yessss gitttgit pushed
   // await Firebase.initializeApp();
   runApp(const BloodDonation());
 }
