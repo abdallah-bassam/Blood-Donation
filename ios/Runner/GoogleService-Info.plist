@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBIOyw62yfPzfDH-FZfD2LZCftNRZEJ-ww</string>
+	<string>AIzaSyDhOJKUZIC-5xvOsY0Q3H-rjCxgcsDdZG4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>795312256970</string>
+	<string>469272843368</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.bloodDonation</string>
 	<key>PROJECT_ID</key>
-	<string>blood-donation-27a94</string>
+	<string>blood-donation-11584</string>
 	<key>STORAGE_BUCKET</key>
-	<string>blood-donation-27a94.appspot.com</string>
+	<string>blood-donation-11584.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:795312256970:ios:c5356a490c69ca8a194133</string>
+	<string>1:469272843368:ios:61f9b8c989b3ab854917dd</string>
 </dict>
 </plist>

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:blood_donation/models/patient_model.dart';
@@ -5,25 +7,24 @@ import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../screens/sign_up.dart';
 import '../reusable_components.dart';
+import 'package:http/http.dart';
 
-enum Gender {male, female}
-enum Hospital {Albasheer, alameerhamza,university}
+enum Gender { male, female }
 
-List <String> hospitalsForAddPatients = [
+enum Hospital { Albasheer, alameerhamza, university }
+
+List<String> hospitalsForAddPatients = [
   'Albasheer',
   'alameer hamza',
   'university'
 ];
 
+class BloodDonationCubit extends Cubit<BloodDonationStates> {
+  BloodDonationCubit() : super(InitialAppState());
 
-class BloodDonationCubit extends Cubit<BloodDonationStates>
-{
-  BloodDonationCubit():super(InitialAppState());
-
-  static BloodDonationCubit get(context)=>BlocProvider.of(context);
+  static BloodDonationCubit get(context) => BlocProvider.of(context);
   IconData suffixPassword = Icons.visibility_off;
   IconData suffixConfirmPassword = Icons.visibility_off;
   IconData rememberMeIcon = Icons.check_box_outline_blank_sharp;
@@ -49,27 +50,22 @@ class BloodDonationCubit extends Cubit<BloodDonationStates>
   int bloodTypeListForPatients = 0;
   int lengthOfList = patientModels.length;
 
-
-
   bool showInnerListForHospitalA = false;
-  List <Widget> innerListForHospitalA = [];
+  List<Widget> innerListForHospitalA = [];
   IconData iconInHospitalAList = Icons.arrow_circle_down_rounded;
 
-  void changeIconInHospitalAList(){
-    if(iconInHospitalAList == Icons.arrow_circle_down_rounded) {
+  void changeIconInHospitalAList() {
+    if (iconInHospitalAList == Icons.arrow_circle_down_rounded) {
       iconInHospitalAList = Icons.arrow_circle_up_rounded;
-    }
-    else {
+    } else {
       iconInHospitalAList = Icons.arrow_circle_down_rounded;
     }
-      emit(ChangeIconInHospitalAListState());
+    emit(ChangeIconInHospitalAListState());
   }
 
-  void addToInnerListForHospitalA(BuildContext context)
-  {
+  void addToInnerListForHospitalA(BuildContext context) {
     innerListForHospitalA = [];
-    for(int index = 0;index<patientModelsAHospital.length;index++)
-    {
+    for (int index = 0; index < patientModelsAHospital.length; index++) {
       innerListForHospitalA.add(buildPatientItem(
         context: context,
         patientModel: patientModelsAHospital[index],
@@ -78,32 +74,27 @@ class BloodDonationCubit extends Cubit<BloodDonationStates>
     emit(AddToInnerListForHospitalAState());
   }
 
-  void changeShowInnerListForHospitalA()
-  {
+  void changeShowInnerListForHospitalA() {
     showInnerListForHospitalA = !showInnerListForHospitalA;
     emit(ChangeShowInnerListHospitalAState());
   }
 
-
   bool showInnerListForHospitalB = false;
-  List <Widget> innerListForHospitalB = [];
+  List<Widget> innerListForHospitalB = [];
   IconData iconInHospitalBList = Icons.arrow_circle_down_rounded;
 
-  void changeIconInHospitalBList(){
-    if(iconInHospitalBList == Icons.arrow_circle_down_rounded) {
+  void changeIconInHospitalBList() {
+    if (iconInHospitalBList == Icons.arrow_circle_down_rounded) {
       iconInHospitalBList = Icons.arrow_circle_up_rounded;
-    }
-    else {
+    } else {
       iconInHospitalBList = Icons.arrow_circle_down_rounded;
     }
     emit(ChangeIconInHospitalBListState());
   }
 
-  void addToInnerListForHospitalB(BuildContext context)
-  {
+  void addToInnerListForHospitalB(BuildContext context) {
     innerListForHospitalB = [];
-    for(int index = 0;index<patientModelsBHospital.length;index++)
-    {
+    for (int index = 0; index < patientModelsBHospital.length; index++) {
       innerListForHospitalB.add(buildPatientItem(
         context: context,
         patientModel: patientModelsBHospital[index],
@@ -111,116 +102,98 @@ class BloodDonationCubit extends Cubit<BloodDonationStates>
     }
 
     emit(AddToInnerListForHospitalBState());
-
   }
 
-  void changeShowInnerListForHospitalB()
-  {
+  void changeShowInnerListForHospitalB() {
     showInnerListForHospitalB = !showInnerListForHospitalB;
     emit(ChangeShowInnerListHospitalBState());
   }
 
-
-  void changeLengthOfList(index)
-  {
+  void changeLengthOfList(index) {
     lengthOfList = index;
     emit(ChangeLengthOfListState());
   }
 
-  void changeBloodTypeListForDonate(index)
-  {
+  void changeBloodTypeListForDonate(index) {
     bloodTypeListForPatients = index;
     emit(ChangeBloodTypeListState());
   }
 
-  void changeSelectedItemForDonate(index)
-  {
+  void changeSelectedItemForDonate(index) {
     selectedIndex = index;
     emit(ChangeSelectedItemState());
   }
 
-  void changeDonorHomeScreens(index)
-  {
+  void changeDonorHomeScreens(index) {
     screen = index;
     emit(ChangeDonorHomeScreensState());
   }
 
-
-  void changePasswordIcon()
-  {
-    if(suffixPassword == Icons.visibility) {
+  void changePasswordIcon() {
+    if (suffixPassword == Icons.visibility) {
       suffixPassword = Icons.visibility_off;
-    }else {
+    } else {
       suffixPassword = Icons.visibility;
     }
     emit(ChangePasswordIconState());
   }
 
-  void changeIsPassword()
-  {
+  void changeIsPassword() {
     isPassword = !isPassword;
     emit(ChangeIsPasswordState());
   }
 
-  void changeConfirmPasswordIcon()
-  {
-    if(suffixConfirmPassword == Icons.visibility) {
+  void changeConfirmPasswordIcon() {
+    if (suffixConfirmPassword == Icons.visibility) {
       suffixConfirmPassword = Icons.visibility_off;
-    }else {
+    } else {
       suffixConfirmPassword = Icons.visibility;
     }
     emit(ChangeConfirmPasswordIconState());
   }
 
-  void changeIsConfirmPassword()
-  {
+  void changeIsConfirmPassword() {
     isConfirmPassword = !isConfirmPassword;
     emit(ChangeIsConfirmPasswordState());
   }
 
-  void changeRememberMeIcon()
-  {
-    if(rememberMeIcon == Icons.check_box) {
+  void changeRememberMeIcon() {
+    if (rememberMeIcon == Icons.check_box) {
       rememberMeIcon = Icons.check_box_outline_blank_sharp;
-    }else {
+    } else {
       rememberMeIcon = Icons.check_box;
     }
     emit(ChangeRememberMeIconState());
   }
 
-  void userLogin(
-  {
+  void userLogin({
     required String email,
     required String password,
-}
-      ){
+  }) {
     DioHelper.postData(
       url: 'login',
       data: {
-        'email':email,
-        'password':password,
+        'email': email,
+        'password': password,
       },
     ).then((value) {
       print(value.data);
       emit(SuccessUserLoginState());
-    }).catchError((e){
+    }).catchError((e) {
       print(e.toString());
       emit(FailedUserLoginState());
     });
   }
 
-  void changeIndexOfBottomNavBarDonor(index)
-  {
+  void changeIndexOfBottomNavBarDonor(index) {
     currentIndexDonor = index;
     emit(ChangeIndexOfBottomNavBarDonorState());
   }
 
-  void changeSelectedGender(value)
-  {
+  void changeSelectedGender(value) {
     selectedGender = value;
     emit(ChangeSelectedGenderState());
   }
-
 
   // Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin
 
@@ -239,57 +212,53 @@ class BloodDonationCubit extends Cubit<BloodDonationStates>
   TextEditingController agePatientController = TextEditingController();
   TextEditingController firstDateToDonateController = TextEditingController();
   TextEditingController lastDateToDonateController = TextEditingController();
-  TextEditingController hospitalWorkingTimeFromController = TextEditingController();
-  TextEditingController hospitalWorkingTimeToController = TextEditingController();
+  TextEditingController hospitalWorkingTimeFromController =
+      TextEditingController();
+  TextEditingController hospitalWorkingTimeToController =
+      TextEditingController();
 
-  void changeIndexOfBottomNavBarAdmin(index)
-  {
+  void changeIndexOfBottomNavBarAdmin(index) {
     currentIndexAdmin = index;
     emit(ChangeIndexOfBottomNavBarAdminState());
   }
 
-  void changeAdminHomeScreens(index)
-  {
+  void changeAdminHomeScreens(index) {
     adminScreen = index;
     emit(ChangeDonorHomeScreensState());
   }
 
-  void changeBloodTypeForAddPatient(bloodType)
-  {
+  void changeBloodTypeForAddPatient(bloodType) {
     bloodTypeForAddPatient = bloodType;
     emit(ChangeBloodTypeAddPatientState());
   }
 
-  void changeSelectedItemForAddPatient(index)
-  {
+  void changeSelectedItemForAddPatient(index) {
     selectedIndexAddPatient = index;
     emit(ChangeSelectedItemAddPatientState());
   }
 
-  void changeSelectedGenderForAddPatient(value)
-  {
+  void changeSelectedGenderForAddPatient(value) {
     selectedGenderAddPatient = value;
     emit(ChangeSelectedGenderForAddPatientState());
   }
 
-  void changeSelectedHospitalForAddPatient(value)
-  {
+  void changeSelectedHospitalForAddPatient(value) {
     selectedHospitalAddPatient = value;
     emit(ChangeSelectedHospitalForAddPatientState());
   }
-  void changeSelectedItemForDonors(index)
-  {
+
+  void changeSelectedItemForDonors(index) {
     selectedIndexDonors = index;
     emit(ChangeSelectedItemDonorsState());
   }
-  void changeBloodTypeListForDonors(index)
-  {
+
+  void changeBloodTypeListForDonors(index) {
     bloodTypeListForDonors = index;
     emit(ChangeBloodTypeListDonorsState());
   }
-  void changeIconInPatientList()
-  {
-    if(iconInPatientList == Icons.arrow_downward) {
+
+  void changeIconInPatientList() {
+    if (iconInPatientList == Icons.arrow_downward) {
       iconInPatientList = Icons.arrow_upward;
     } else {
       iconInPatientList = Icons.arrow_downward;
@@ -300,15 +269,36 @@ class BloodDonationCubit extends Cubit<BloodDonationStates>
 
   bool isChecked = false;
 
-  void changeIsCheckedBox()
-  {
+  void changeIsCheckedBox() {
     isChecked = !isChecked;
     emit(ChangeIsCheckedBoxState());
   }
 
-  void changeSelectedItemForSignUp(index)
-  {
+  void changeSelectedItemForSignUp(index) {
     selectedIndexSignUp = index;
     emit(ChangeSelectedItemForSignUpState());
+  }
+
+  Future<void> pushNotification({required deviceToken,required title,required bodyOfNoti}) async {
+    var body = {
+      "to": "$deviceToken",
+      "notification": {
+        "title": "$title",
+        "body": "$bodyOfNoti"
+      }
+    };
+    var response = await post(
+      Uri.parse('http://fcm.googleapis.com/fcm/send'),
+      body: jsonEncode(body),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'key=ya29.a0AfB_byB55e6WNIPsGcvReGZ6w9ttV_Nl5z1oyxuD85UJp9rQ9IWyIvvPCO3ELHDMpmSikLZn3U3Hpdcv4piqRa0L7eIm4hwneK9chuK5fCTAmayrfRAgcjMGvSX6J1BiHYODN3FxjV0u9hzng4xYA7oobiUoO6r7cwHjaCgYKAZ0SARESFQHGX2MiND_N05WZk4ym8xRovcS8FQ0171'
+      }
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    emit(PushNotificationState());
   }
 }

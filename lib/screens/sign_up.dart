@@ -1,4 +1,5 @@
 import 'package:blood_donation/screens/login.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../shared/cubit/cubit.dart';
@@ -231,7 +232,23 @@ class SignUp extends StatelessWidget {
                           height: 25,
                         ),
                         sharedMaterialButtonAccount(
-                            onPressed: () {
+                            onPressed: () async {
+                              switch(bloodTypes[cubit.selectedIndexSignUp])
+                              {
+                                case 'A+': await FirebaseMessaging.instance.subscribeToTopic('APlus');break;
+                                case 'A-':
+                                  {
+                                    print('A-------');
+                                    await FirebaseMessaging.instance
+                                        .subscribeToTopic('AMinus');
+                                  };break;
+                                case 'B+': await FirebaseMessaging.instance.subscribeToTopic('BPlus');break;
+                                case 'B-': await FirebaseMessaging.instance.subscribeToTopic('BMinus');break;
+                                case 'O+': await FirebaseMessaging.instance.subscribeToTopic('OPlus');break;
+                                case 'O-': await FirebaseMessaging.instance.subscribeToTopic('OMinus');break;
+                                case 'AB+': await FirebaseMessaging.instance.subscribeToTopic('ABPlus');break;
+                                case 'AB-': await FirebaseMessaging.instance.subscribeToTopic('ABMinus');break;
+                              }
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
                                 // Handle form submission with valid data

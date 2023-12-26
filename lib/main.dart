@@ -8,17 +8,34 @@ import 'package:blood_donation/shared/cubit/bloc_observer.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/network/remote/dio_helper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main(){
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  print("Handling a background message: ${message.messageId}");
+}
+
+Future main()async{
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
-  // yessss gitttgit pushed
-  // await Firebase.initializeApp();
+
+
+  try {
+    await Firebase.initializeApp();
+    var token = await FirebaseMessaging.instance.getToken();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+    // Handle the error gracefully, such as displaying an error message or taking necessary actions.
+  }
   runApp(const BloodDonation());
+
 }
 
 class BloodDonation extends StatelessWidget {

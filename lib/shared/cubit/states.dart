@@ -37,3 +37,4 @@ class ChangeBloodTypeListDonorsState extends BloodDonationStates{}
 class ChangeIconInPatientListState extends BloodDonationStates{}
 class ChangeIsCheckedBoxState extends BloodDonationStates{}
 class ChangeSelectedItemForSignUpState extends BloodDonationStates{}
+class PushNotificationState extends BloodDonationStates{}

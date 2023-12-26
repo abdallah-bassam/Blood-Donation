@@ -42,7 +42,8 @@ dependencies:
   alert_dialog: ^1.0.2
   intl: ^0.18.1
   firebase_core: ^2.24.2
-
+  firebase_messaging: ^14.7.9
+  http: ^1.1.0
 
 
 dev_dependencies:
