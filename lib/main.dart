@@ -29,10 +29,11 @@ Future main()async{
   try {
     await Firebase.initializeApp();
     var token = await FirebaseMessaging.instance.getToken();
+    print(token);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     print('Error initializing Firebase: $e');
-    // H.....andle the error gracefully, such as displaying an error message or taking necessary actions.
+    // Handle the error gracefully, such as displaying an error message or taking necessary actions.
   }
   runApp(const BloodDonation());
 
