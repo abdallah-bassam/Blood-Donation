@@ -32,7 +32,7 @@ Future main()async{
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     print('Error initializing Firebase: $e');
-    // Handle the error gracefully, such as displaying an error message or taking necessary actions.
+    // H.....andle the error gracefully, such as displaying an error message or taking necessary actions.
   }
   runApp(const BloodDonation());
 
