@@ -279,22 +279,41 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeSelectedItemForSignUpState());
   }
 
-  Future<void> pushNotification({required deviceToken,required title,required bodyOfNoti}) async {
+  Future<void> pushNotification({required bloodType}) async {
     var body = {
-      "to": "$deviceToken",
+      "to": "topics/$bloodType",
       "notification": {
-        "title": "$title",
-        "body": "$bodyOfNoti"
+        "title": "Blood Donation",
+        "body": "An emergency donation compatible with your blood type"
+      },
+      // "android":{
+      //   "priority":"HIGH",
+      //   "notification":{
+      //     "notification_priority":"PRIORITY_MAX",
+      //     "sound":"default",
+      //     "default_sound":true,
+      //     "default_vibrate_timings":true,
+      //     "default_light_settings":true
+      //   }
+      // },
+      "data": {
+        "type": "order",
+        "id": '28',
+        "click_action": "FLUTTER_NOTIFICATION_CLICK"
       }
     };
-    var response = await post(
-      Uri.parse('http://fcm.googleapis.com/fcm/send'),
-      body: jsonEncode(body),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'key=ya29.a0AfB_byB55e6WNIPsGcvReGZ6w9ttV_Nl5z1oyxuD85UJp9rQ9IWyIvvPCO3ELHDMpmSikLZn3U3Hpdcv4piqRa0L7eIm4hwneK9chuK5fCTAmayrfRAgcjMGvSX6J1BiHYODN3FxjV0u9hzng4xYA7oobiUoO6r7cwHjaCgYKAZ0SARESFQHGX2MiND_N05WZk4ym8xRovcS8FQ0171'
-      }
-    );
+    var headers = {
+      'content-type': 'application/json',
+      'Authorization':
+          'key=AAAAbULXVGg:APA91bFcYGhk3aIZDa6rIYiSAdqcWnTatcgPaXHK5SqVuTrXxTh1ArNBWM4rn6ZD9LLA_GelnaD7_rcjJ05u4Q5JFYNqTuNAdhBvZK2U81h5rRFgPzSANY28Gt_4NMvP-in8aYwwWxcn'
+    };
+    var response = await post(Uri.parse('http://fcm.googleapis.com/fcm/send'),
+        body: json.encode(body),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers
+        ).then((value) {}).catchError((error) {
+      print(error.toString());
+    });
 
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
