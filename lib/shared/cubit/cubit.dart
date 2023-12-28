@@ -199,7 +199,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   int adminScreen = 0;
   int currentIndexAdmin = 0;
-  int selectedIndexAddPatient = 0;
+  int selectedIndexAddPatient = -1;
   int selectedIndexDonors = 0;
   int bloodTypeListForDonors = 0;
   int selectedIndexSignUp = -1;
@@ -286,16 +286,6 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
         "title": "Blood Donation",
         "body": "An emergency donation compatible with your blood type"
       },
-      // "android":{
-      //   "priority":"HIGH",
-      //   "notification":{
-      //     "notification_priority":"PRIORITY_MAX",
-      //     "sound":"default",
-      //     "default_sound":true,
-      //     "default_vibrate_timings":true,
-      //     "default_light_settings":true
-      //   }
-      // },
       "data": {
         "type": "order",
         "id": '28',
@@ -311,13 +301,11 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
         body: json.encode(body),
         encoding: Encoding.getByName('utf-8'),
         headers: headers
-        ).then((value) {}).catchError((error) {
+        ).then((value) {
+          print(value);
+    }).catchError((error) {
       print(error.toString());
     });
-
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     emit(PushNotificationState());
   }
 }

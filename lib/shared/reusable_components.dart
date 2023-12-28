@@ -176,7 +176,6 @@ Widget bloodTypesBoxForAddPatient(
     onTap: () {
       BloodDonationCubit.get(context).changeSelectedItemForAddPatient(index);
       BloodDonationCubit.get(context).changeBloodTypeForAddPatient(bloodType);
-      print(BloodDonationCubit.get(context).bloodTypeForAddPatient);
     },
     child: Container(
       padding: EdgeInsets.all(8),

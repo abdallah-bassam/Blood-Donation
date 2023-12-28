@@ -4,6 +4,7 @@ import 'package:blood_donation/screens/donor_home_layout/profile/edit_profile.da
 import 'package:blood_donation/screens/login.dart';
 import 'package:blood_donation/screens/on_boarding.dart';
 import 'package:blood_donation/screens/sign_up.dart';
+import 'package:blood_donation/screens/start.dart';
 import 'package:blood_donation/shared/cubit/bloc_observer.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
@@ -74,7 +75,7 @@ class BloodDonation extends StatelessWidget {
                 elevation: 20,
               ),
             ),
-            home: SignUp(),
+            home: OnBoardingScreen(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );

@@ -140,7 +140,15 @@ class SignUp extends StatelessWidget {
                             ),
                             sharedTextFormField(
                                 controller: cubit.confirmPasswordController,
-                                validator: (value) {},
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter an password';
+                                  }
+                                  if (cubit.confirmPasswordController.text!=cubit.passwordController.text) {
+                                    return 'Confirm Password must be same Password';
+                                  }
+                                  return null;
+                                },
                                 label: 'Confirm Password',
                                 suffix: cubit.suffixConfirmPassword,
                                 isPassword: cubit.isConfirmPassword,
@@ -191,7 +199,7 @@ class SignUp extends StatelessWidget {
                             ),
                             sharedText(text: 'Gender', fontSize: 20,fontWeight: FontWeight.bold),
                             RadioListTile<Gender>(
-                              title: const Text('Male'),
+                              title: sharedText(text: 'Male',fontSize: 18),
                               value: Gender.male,
                               groupValue: cubit.selectedGender,
                               onChanged: (value) {
@@ -199,7 +207,7 @@ class SignUp extends StatelessWidget {
                               },
                             ),
                             RadioListTile<Gender>(
-                              title: const Text('Female'),
+                              title: sharedText(text: 'Female',fontSize: 18),
                               value: Gender.female,
                               groupValue: cubit.selectedGender,
                               onChanged: (value) {
@@ -233,25 +241,194 @@ class SignUp extends StatelessWidget {
                         ),
                         sharedMaterialButtonAccount(
                             onPressed: () async {
-                              switch(bloodTypes[cubit.selectedIndexSignUp])
-                              {
-                                case 'A+': await FirebaseMessaging.instance.subscribeToTopic('APlus');break;
-                                case 'A-':
-                                  {
-                                    print('A-------');
-                                    await FirebaseMessaging.instance
-                                        .subscribeToTopic('AMinus');
-                                  };break;
-                                case 'B+': await FirebaseMessaging.instance.subscribeToTopic('BPlus');break;
-                                case 'B-': await FirebaseMessaging.instance.subscribeToTopic('BMinus');break;
-                                case 'O+': await FirebaseMessaging.instance.subscribeToTopic('OPlus');break;
-                                case 'O-': await FirebaseMessaging.instance.subscribeToTopic('OMinus');break;
-                                case 'AB+': await FirebaseMessaging.instance.subscribeToTopic('ABPlus');break;
-                                case 'AB-': await FirebaseMessaging.instance.subscribeToTopic('ABMinus');break;
-                              }
-                              if (formKey.currentState!.validate()) {
+                              if (formKey.currentState!.validate()&&cubit.selectedGender!=null&&cubit.selectedIndexSignUp!=-1) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: null,
+                                      content: sharedText(text: 'Sign Up Successfully',fontSize: 22,fontWeight: FontWeight.bold),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                switch(bloodTypes[cubit.selectedIndexSignUp])
+                                {
+                                  case 'A+':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('APlus');
+                                    }break;
+                                  case 'A-':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('AMinus');
+                                    }break;
+                                  case 'B+':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('BPlus');
+                                    }
+                                    break;
+                                  case 'B-':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('BMinus');
+                                    }
+                                    break;
+                                  case 'O+':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('OPlus');
+                                    }
+                                    break;
+                                  case 'O-':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('OMinus');
+                                    }
+                                    break;
+                                  case 'AB+':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('ABPlus');
+                                    }
+                                    break;
+                                  case 'AB-':
+                                    {
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('APlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('AMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BMinus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('ABPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('BPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OPlus');
+                                      await FirebaseMessaging.instance
+                                          .unsubscribeFromTopic('OMinus');
+
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic('ABMinus');
+                                    }
+                                    break;
+                                }
                                 formKey.currentState!.save();
-                                // Handle form submission with valid data
                               }
                             },
                             text: "Sign Up"),

@@ -194,23 +194,30 @@ class AddPatients extends StatelessWidget {
                   height: 10,
                 ),
                 Center(child: sharedMaterialButtonAccount(onPressed: (){
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: null,
-                        content: sharedText(text: 'Added Successfully',fontSize: 22,fontWeight: FontWeight.bold),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  String bloodType='';
+                  print('bloodType: ${cubit.bloodTypeForAddPatient}');
+                  if(cubit.bloodTypeForAddPatient == 'A+') {
+                    bloodType='APlus';
+                  }
+                  cubit.pushNotification(bloodType: bloodType).then((value) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: null,
+                          content: sharedText(text: 'Added Successfully',fontSize: 22,fontWeight: FontWeight.bold),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  });
                 }, text: 'Add',))
               ],
             ),
