@@ -431,7 +431,7 @@ class SignUp extends StatelessWidget {
                                 formKey.currentState!.save();
                               }
                             },
-                            text: "Si..gn.. Up"),
+                            text: "Si....gn.. Up"),
                         SizedBox(
                           height: 15,
                         ),
