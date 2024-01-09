@@ -1,10 +1,11 @@
 import 'package:blood_donation/screens/admin_home_layout/admin_home_layout.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home_layout.dart';
 import 'package:blood_donation/screens/donor_home_layout/profile/edit_profile.dart';
-import 'package:blood_donation/screens/login.dart';
-import 'package:blood_donation/screens/on_boarding.dart';
-import 'package:blood_donation/screens/sign_up.dart';
-import 'package:blood_donation/screens/start.dart';
+import 'package:blood_donation/screens/donor_home_layout/profile/history_of_donations.dart';
+import 'package:blood_donation/screens/starting_app/forget_password.dart';
+import 'package:blood_donation/screens/starting_app/login.dart';
+import 'package:blood_donation/screens/starting_app/on_boarding.dart';
+import 'package:blood_donation/screens/starting_app/splash_screen.dart';
 import 'package:blood_donation/shared/cubit/bloc_observer.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
@@ -30,7 +31,6 @@ Future main()async{
   try {
     await Firebase.initializeApp();
     var token = await FirebaseMessaging.instance.getToken();
-    print(token);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     print('Error initializing Firebase: $e');
@@ -70,12 +70,12 @@ class BloodDonation extends StatelessWidget {
               ),
               bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: Colors.red,
+                selectedItemColor: Colors.redAccent,
                 backgroundColor: Colors.white,
                 elevation: 20,
               ),
             ),
-            home: DonorHomeLayout(),
+            home: SplashScreen(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );

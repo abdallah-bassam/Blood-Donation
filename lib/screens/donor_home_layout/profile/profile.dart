@@ -4,6 +4,7 @@ import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/reusable_components.dart';
+import 'history_of_donations.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -85,7 +86,13 @@ class Profile extends StatelessWidget {
                   );
                 }, text: 'Edit Profile', context: context,icon: Icons.edit_outlined,width: 300),
                 SizedBox(height: 30,),
-                sharedMaterialButtonApp(onPressed: (){}, text: 'History of donations', context: context,icon: Icons.history,width: 300),
+                sharedMaterialButtonApp(onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HistoryOfDonations()),
+                  );
+                }, text: 'History of donations', context: context,icon: Icons.history,width: 300),
                 SizedBox(height: 30,),
                 sharedMaterialButtonApp(onPressed: (){}, text: 'Logout', context: context,icon: Icons.logout,width: 300),
               ],

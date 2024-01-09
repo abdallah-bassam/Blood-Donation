@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/reusable_components.dart';
-import '../../sign_up.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -111,6 +110,10 @@ class EditProfile extends StatelessWidget {
                               isPassword: false,
                               width: 70,
                               textInputType: TextInputType.number),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          sharedText(text: 'Gender', fontSize: 18),
                           RadioListTile<Gender>(
                             title: const Text('Male'),
                             value: Gender.male,
@@ -133,7 +136,25 @@ class EditProfile extends StatelessWidget {
                         height: 15,
                       ),
                       sharedMaterialButtonAccount(
-                          onPressed: () {}, text: "Update"),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: null,
+                                  content: sharedText(text: 'Profile updated',fontSize: 22,fontWeight: FontWeight.bold),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }, text: "Update"),
                     ],
                   ),
                 ),

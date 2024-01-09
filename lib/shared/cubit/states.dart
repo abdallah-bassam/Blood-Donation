@@ -6,7 +6,17 @@ class ChangePasswordIconState extends BloodDonationStates{}
 class ChangeIsPasswordState extends BloodDonationStates{}
 class ChangeRememberMeIconState extends BloodDonationStates{}
 class SuccessUserLoginState extends BloodDonationStates{}
-class FailedUserLoginState extends BloodDonationStates{}
+class FailedUserLoginState extends BloodDonationStates{
+  String error;
+  FailedUserLoginState({required this.error});
+}
+class LoadingLoginState extends BloodDonationStates{}
+class SuccessDonorSignUpState extends BloodDonationStates{}
+class FailedDonorSignUpState extends BloodDonationStates{
+  String error;
+  FailedDonorSignUpState({required this.error});
+}
+class LoadingSignUpState extends BloodDonationStates{}
 class ChangeIndexOfBottomNavBarDonorState extends BloodDonationStates{}
 class ChangeDonorHomeScreensState extends BloodDonationStates{}
 class ChangeSelectedItemState extends BloodDonationStates{}

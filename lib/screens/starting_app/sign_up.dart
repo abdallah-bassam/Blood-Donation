@@ -1,12 +1,10 @@
-import 'package:blood_donation/screens/login.dart';
+import 'package:blood_donation/screens/starting_app/login.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../shared/cubit/cubit.dart';
-import '../shared/cubit/states.dart';
-import '../shared/reusable_components.dart';
-import 'donor_home_layout/profile/edit_profile.dart';
-
+import '../../shared/cubit/cubit.dart';
+import '../../shared/cubit/states.dart';
+import '../../shared/reusable_components.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
@@ -14,20 +12,12 @@ class SignUp extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
   RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-  RegExp passwordRegex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+  RegExp passwordRegex =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
   RegExp phoneRegex = RegExp(r'^\d{10}$');
   RegExp ageRegex = RegExp(r'^\d{1,3}$');
 
-  List<String> bloodTypes = [
-    'A+',
-    'A-',
-    'B+',
-    'B-',
-    'O+',
-    'O-',
-    'AB+',
-    'AB-'
-  ];
+  List<String> bloodTypes = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +134,8 @@ class SignUp extends StatelessWidget {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter an password';
                                   }
-                                  if (cubit.confirmPasswordController.text!=cubit.passwordController.text) {
+                                  if (cubit.confirmPasswordController.text !=
+                                      cubit.passwordController.text) {
                                     return 'Confirm Password must be same Password';
                                   }
                                   return null;
@@ -197,9 +188,12 @@ class SignUp extends StatelessWidget {
                             SizedBox(
                               height: 15,
                             ),
-                            sharedText(text: 'Gender', fontSize: 20,fontWeight: FontWeight.bold),
+                            sharedText(
+                                text: 'Gender',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                             RadioListTile<Gender>(
-                              title: sharedText(text: 'Male',fontSize: 18),
+                              title: sharedText(text: 'Male', fontSize: 18),
                               value: Gender.male,
                               groupValue: cubit.selectedGender,
                               onChanged: (value) {
@@ -207,7 +201,7 @@ class SignUp extends StatelessWidget {
                               },
                             ),
                             RadioListTile<Gender>(
-                              title: sharedText(text: 'Female',fontSize: 18),
+                              title: sharedText(text: 'Female', fontSize: 18),
                               value: Gender.female,
                               groupValue: cubit.selectedGender,
                               onChanged: (value) {
@@ -217,7 +211,10 @@ class SignUp extends StatelessWidget {
                             SizedBox(
                               height: 15,
                             ),
-                            sharedText(text: 'Blood type', fontSize: 20,fontWeight: FontWeight.bold),
+                            sharedText(
+                                text: 'Blood type',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                             SizedBox(
                               height: 10,
                             ),
@@ -226,8 +223,11 @@ class SignUp extends StatelessWidget {
                               child: ListView.separated(
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => bloodTypesBoxForSignUp(
-                                    bloodType: bloodTypes[index], context: context, index: index),
+                                itemBuilder: (context, index) =>
+                                    bloodTypesBoxForSignUp(
+                                        bloodType: bloodTypes[index],
+                                        context: context,
+                                        index: index),
                                 separatorBuilder: (context, index) => SizedBox(
                                   width: 8,
                                 ),
@@ -241,13 +241,33 @@ class SignUp extends StatelessWidget {
                         ),
                         sharedMaterialButtonAccount(
                             onPressed: () async {
-                              if (formKey.currentState!.validate()&&cubit.selectedGender!=null&&cubit.selectedIndexSignUp!=-1) {
+                              if (formKey.currentState!.validate() &&
+                                  cubit.selectedGender != null &&
+                                  cubit.selectedIndexSignUp != -1)
+                              {
+                                cubit.donorSignUp(
+                                    email: cubit.emailController.text,
+                                    password: cubit.passwordController.text,
+                                    firstName: cubit.firstNameController.text,
+                                    lastName: cubit.lastNameController.text,
+                                    phoneNumber:
+                                        cubit.phoneNumberController.text,
+                                    age: cubit.ageController.text,
+                                    gender:
+                                        cubit.selectedGender == Gender.female
+                                            ? 'female'
+                                            : 'male',
+                                    bloodType: bloodTypes[cubit.selectedIndexSignUp]);
+
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: null,
-                                      content: sharedText(text: 'Sign Up Successfully',fontSize: 22,fontWeight: FontWeight.bold),
+                                      content: sharedText(
+                                          text: 'Sign Up Successfully',
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () {
@@ -259,8 +279,7 @@ class SignUp extends StatelessWidget {
                                     );
                                   },
                                 );
-                                switch(bloodTypes[cubit.selectedIndexSignUp])
-                                {
+                                switch (bloodTypes[cubit.selectedIndexSignUp]) {
                                   case 'A+':
                                     {
                                       await FirebaseMessaging.instance
@@ -280,7 +299,8 @@ class SignUp extends StatelessWidget {
 
                                       await FirebaseMessaging.instance
                                           .subscribeToTopic('APlus');
-                                    }break;
+                                    }
+                                    break;
                                   case 'A-':
                                     {
                                       await FirebaseMessaging.instance
@@ -300,7 +320,8 @@ class SignUp extends StatelessWidget {
 
                                       await FirebaseMessaging.instance
                                           .subscribeToTopic('AMinus');
-                                    }break;
+                                    }
+                                    break;
                                   case 'B+':
                                     {
                                       await FirebaseMessaging.instance

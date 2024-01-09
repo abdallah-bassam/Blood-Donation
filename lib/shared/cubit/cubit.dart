@@ -6,10 +6,13 @@ import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../screens/sign_up.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
 import '../reusable_components.dart';
 import 'package:http/http.dart';
+import 'package:path/path.dart' as path;
 
 enum Gender { male, female }
 
@@ -53,6 +56,44 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   bool showInnerListForHospitalA = false;
   List<Widget> innerListForHospitalA = [];
   IconData iconInHospitalAList = Icons.arrow_circle_down_rounded;
+
+  void userLogin({required String email, required String password}) {
+    emit(LoadingLoginState());
+
+    DioHelper.postToDatabase(
+        url: '', data: {'email': email, 'password': password}).then((value) {
+      emit(SuccessUserLoginState());
+    }).catchError((error) {
+      emit(FailedUserLoginState(error: error.toString()));
+    });
+  }
+
+  void donorSignUp(
+      {required String email,
+      required String password,
+      required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String age,
+      required String gender,
+      required String bloodType}) {
+    emit(LoadingSignUpState());
+    DioHelper.postToDatabase(url: '', data: {
+      "email": email,
+      "password": password,
+      "first name": firstName,
+      "last name": lastName,
+      "phone number": phoneNumber,
+      "age": age,
+      "gender": gender,
+      "blood type": bloodType
+    }).then((value){
+      emit(SuccessDonorSignUpState());
+    }).catchError((error){
+      emit(FailedDonorSignUpState(error: error.toString()));
+    });
+
+  }
 
   void changeIconInHospitalAList() {
     if (iconInHospitalAList == Icons.arrow_circle_down_rounded) {
@@ -166,25 +207,6 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeRememberMeIconState());
   }
 
-  void userLogin({
-    required String email,
-    required String password,
-  }) {
-    DioHelper.postData(
-      url: 'login',
-      data: {
-        'email': email,
-        'password': password,
-      },
-    ).then((value) {
-      print(value.data);
-      emit(SuccessUserLoginState());
-    }).catchError((e) {
-      print(e.toString());
-      emit(FailedUserLoginState());
-    });
-  }
-
   void changeIndexOfBottomNavBarDonor(index) {
     currentIndexDonor = index;
     emit(ChangeIndexOfBottomNavBarDonorState());
@@ -281,31 +303,47 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   Future<void> pushNotification({required bloodType}) async {
     var body = {
-      "to": "topics/$bloodType",
-      "notification": {
-        "title": "Blood Donation",
-        "body": "An emergency donation compatible with your blood type"
-      },
-      "data": {
-        "type": "order",
-        "id": '28',
-        "click_action": "FLUTTER_NOTIFICATION_CLICK"
+      "message": {
+        "topic": "$bloodType",
+        "notification": {
+          "title": "Blood Donation",
+          "body": "An emergency donation compatible with your blood type"
+        },
       }
     };
-    var headers = {
-      'content-type': 'application/json',
-      'Authorization':
-          'key=AAAAbULXVGg:APA91bFcYGhk3aIZDa6rIYiSAdqcWnTatcgPaXHK5SqVuTrXxTh1ArNBWM4rn6ZD9LLA_GelnaD7_rcjJ05u4Q5JFYNqTuNAdhBvZK2U81h5rRFgPzSANY28Gt_4NMvP-in8aYwwWxcn'
-    };
-    var response = await post(Uri.parse('http://fcm.googleapis.com/fcm/send'),
-        body: json.encode(body),
-        encoding: Encoding.getByName('utf-8'),
-        headers: headers
-        ).then((value) {
-          print(value);
-    }).catchError((error) {
-      print(error.toString());
+    getAccessToken().then((value) {
+      var headers = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer $value'
+      };
+      post(
+              Uri.parse(
+                  'https://fcm.googleapis.com/v1/projects/blood-donation-11584/messages:send'),
+              body: json.encode(body),
+              encoding: Encoding.getByName('utf-8'),
+              headers: headers)
+          .then((value) {})
+          .catchError((error) {
+        print(error.toString());
+      });
+      emit(PushNotificationState());
     });
-    emit(PushNotificationState());
+  }
+
+  Future<String> getAccessToken() async {
+    final String response =
+        await rootBundle.loadString('assets/service-account.json');
+    final data = await json.decode(response);
+    final credentials = ServiceAccountCredentials.fromJson(data);
+
+    final client = await clientViaServiceAccount(
+      credentials,
+      [
+        'https://www.googleapis.com/auth/firebase.messaging'
+      ], // Replace with your desired scopes
+    );
+
+    final accessToken = await client.credentials.accessToken;
+    return accessToken.data;
   }
 }

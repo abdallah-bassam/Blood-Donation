@@ -1,7 +1,8 @@
-import 'package:blood_donation/screens/sign_up.dart';
+import 'package:blood_donation/screens/starting_app/sign_up.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/reusable_components.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,12 +79,16 @@ class Login extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 60,),
-                        sharedMaterialButtonAccount(onPressed: (){
-                          if(formKey.currentState!.validate())
-                            {
-                              cubit.userLogin(email: cubit.emailController.text,password: cubit.passwordController.text);
-                            }
-                        },text: "Login"),
+                        ConditionalBuilder(
+                            builder: (BuildContext context) => sharedMaterialButtonAccount(onPressed: (){
+                              if(formKey.currentState!.validate())
+                              {
+                                cubit.userLogin(email: cubit.emailController.text, password: cubit.passwordController.text);
+                              }
+                            },text: "Login"),
+                            condition: states is! LoadingLoginState,
+                            fallback: (context) => CircularProgressIndicator()
+                        ),
                         SizedBox(height: 60,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

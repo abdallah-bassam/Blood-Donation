@@ -44,6 +44,9 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_messaging: ^14.7.9
   http: ^1.1.0
+  googleapis_auth: ^1.4.1
+  path: ^1.8.3
+  conditional_builder_null_safety: ^0.0.6
 
 
 dev_dependencies:
@@ -56,6 +59,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +80,9 @@ flutter:
     - assets/images/home1.jpg
     - assets/images/home2.jpg
     - assets/images/item.jpg
+    - assets/service-account.json
+    - assets/images/logo.png
+    - assets/images/logo-with-name.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

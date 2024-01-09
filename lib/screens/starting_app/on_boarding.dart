@@ -1,4 +1,4 @@
-import 'package:blood_donation/screens/sign_up.dart';
+import 'package:blood_donation/screens/starting_app/sign_up.dart';
 import 'package:blood_donation/shared/reusable_components.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -44,7 +44,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           TextButton(onPressed: (){
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => SignUp()),
+              MaterialPageRoute(builder: (context) => Login()),
             );
           }, child: sharedText(text: 'SKIP', fontSize: 20, fontWeight: FontWeight.w500)),
 
@@ -97,7 +97,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     if (isLast) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUp()),
+                        MaterialPageRoute(builder: (context) => Login()),
                       );
                     } else {
                       boardController.nextPage(
