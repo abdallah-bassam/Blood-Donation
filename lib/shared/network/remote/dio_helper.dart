@@ -18,4 +18,20 @@ class DioHelper {
       {required url, Map <String,dynamic>? query, required Map <String,dynamic> data}) {
     return dio!.post(url,queryParameters: query,data: data);
   }
+
+  static Future<Response> putToDatabase({
+    required String url,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic> data,
+  }) async {
+    return await dio!.put(url, queryParameters: query, data: data);
+  }
+
+  static Future<Response> deleteFromDatabase({
+    required String url,
+    Map<String, dynamic>? query,
+  }) async {
+    return await dio!.delete(url, queryParameters: query);
+  }
+
 }

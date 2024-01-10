@@ -10,8 +10,8 @@ class DonorHome extends StatelessWidget {
   DonorHome({Key? key}) : super(key: key);
   String name = "#name";
   List<NotesModel> notes = [
-    NotesModel(image: 'assets/images/home1.jpg', title: "Donate Blood", body: 'Donate blood at your own free time at any hospital or blood bank near you'),
-    NotesModel(image: 'assets/images/home2.jpg', title: "Schedule Appointment", body: 'Easily schedule appointments to help save a life'),
+    NotesModel(image: 'assets/images/eat_well.png', title: "Donate Blood", body: 'Donate blood at your own free time at any hospital or blood bank near you'),
+    NotesModel(image: 'assets/images/monti_yourself.png', title: "Schedule Appointment", body: 'Easily schedule appointments to help save a life'),
   ];
   var boardController = PageController();
 
