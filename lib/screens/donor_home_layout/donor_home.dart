@@ -6,29 +6,66 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../shared/reusable_components.dart';
 
+Map<dynamic, dynamic> userDonor = {
+  "First_Name": "Hussein",
+  "Last_Name": "Hroup",
+  "Phone": 791202959,
+  "Age": 22,
+  "Username": "Hussein",
+  "Gender": "male",
+  "Blood_Type": "B+",
+  "password": "24680",
+  "username": "Hussein",
+  "last_Name": "Hroup",
+  "age": 22,
+  "blood_Type": "B+",
+  "phone": 791202959,
+  "gender": "male",
+  "first_Name": "Hussein",
+  "donor_id": 1
+};
+
 class DonorHome extends StatelessWidget {
   DonorHome({Key? key}) : super(key: key);
-  String name = "#name";
+  //String name = ;
   List<NotesModel> notes = [
-    NotesModel(image: 'assets/images/eat_well.png', title: "Donate Blood", body: 'Donate blood at your own free time at any hospital or blood bank near you'),
-    NotesModel(image: 'assets/images/monti_yourself.png', title: "Schedule Appointment", body: 'Easily schedule appointments to help save a life'),
+    NotesModel(
+        image: 'assets/images/eat_well.png',
+        title: "Donate Blood",
+        body:
+            'Donate blood at your own free time at any hospital or blood bank near you'),
+    NotesModel(
+        image: 'assets/images/monti_yourself.png',
+        title: "Schedule Appointment",
+        body: 'Easily schedule appointments to help save a life'),
   ];
   var boardController = PageController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BloodDonationCubit,BloodDonationStates>(
-      listener: (context,states){},
-      builder: (context,states){
+    return BlocConsumer<BloodDonationCubit, BloodDonationStates>(
+      listener: (context, states) {},
+      builder: (context, states) {
         BloodDonationCubit cubit = BlocProvider.of(context);
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              sharedText(text: "Hello, let's donate", fontSize: 20,color: Color(0xFFB6B6B6)),
-              SizedBox(height: 3,),
-              sharedText(text: name, fontSize: 22,color: Colors.black,fontWeight: FontWeight.bold),
-              SizedBox(height: 25,),
+              sharedText(
+                  text: "Hello, let's donate",
+                  fontSize: 20,
+                  color: Color(0xFFB6B6B6)),
+              SizedBox(
+                height: 3,
+              ),
+              sharedText(
+                  text: name,
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 25,
+              ),
               Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -36,7 +73,8 @@ class DonorHome extends StatelessWidget {
                     height: 250,
                     child: PageView.builder(
                       controller: boardController,
-                      itemBuilder: (context, index) => buildNotesItem(notes[index]),
+                      itemBuilder: (context, index) =>
+                          buildNotesItem(notes[index]),
                       itemCount: notes.length,
                       physics: BouncingScrollPhysics(),
                     ),
@@ -54,21 +92,39 @@ class DonorHome extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 25,
+              ),
               Column(
                 children: [
-                  sharedMaterialButtonApp(onPressed: (){
-                    cubit.changeDonorHomeScreens(1);
-                  }, text: 'Donate', context: context,icon: Icons.bloodtype),
-                  SizedBox(height: 25,),
-                  sharedMaterialButtonApp(onPressed: (){
-                    cubit.changeDonorHomeScreens(2);
-                  }, text: 'Hospitals', context: context,icon: Icons.local_hospital),
-                  SizedBox(height: 25,),
-                  sharedMaterialButtonApp(onPressed: (){
-                    cubit.changeDonorHomeScreens(3);
-                    cubit.changeIndexOfBottomNavBarDonor(1);
-                  }, text: 'Notifications', context: context,icon: Icons.notifications),
+                  sharedMaterialButtonApp(
+                      onPressed: () {
+                        cubit.changeDonorHomeScreens(1);
+                      },
+                      text: 'Donate',
+                      context: context,
+                      icon: Icons.bloodtype),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  sharedMaterialButtonApp(
+                      onPressed: () {
+                        cubit.changeDonorHomeScreens(2);
+                      },
+                      text: 'Hospitals',
+                      context: context,
+                      icon: Icons.local_hospital),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  sharedMaterialButtonApp(
+                      onPressed: () {
+                        cubit.changeDonorHomeScreens(3);
+                        cubit.changeIndexOfBottomNavBarDonor(1);
+                      },
+                      text: 'Notifications',
+                      context: context,
+                      icon: Icons.notifications),
                 ],
               ),
             ],
@@ -78,13 +134,10 @@ class DonorHome extends StatelessWidget {
     );
   }
 
-  Widget buildNotesItem(NotesModel model) =>
-      ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: Image(image: AssetImage(model.image), fit: BoxFit.fitWidth)
-      );
+  Widget buildNotesItem(NotesModel model) => ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: Image(image: AssetImage(model.image), fit: BoxFit.fitWidth));
 }
-
 
 class NotesModel {
   String image;

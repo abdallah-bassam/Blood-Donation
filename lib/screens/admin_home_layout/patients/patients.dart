@@ -20,18 +20,19 @@ class Patients extends StatelessWidget {
           children: [
             sharedText(text: "All Patients with their donors", fontSize: 22,color: Colors.black,fontWeight: FontWeight.bold),
             sharedText(text: "Increase the donor's achievements from show donors", fontSize: 20,color: Color(0xFFB6B6B6)),
-            SizedBox(height: 10,),
+            SizedBox(height: 20,),
             sharedSearchBox(context: context),
             SizedBox(height: 10,),
             Expanded(
-              child: ListView.separated(
+              child: cubit.searchedPatientNotFound?Center(child: sharedText(text: 'Not Found', fontSize: 30,fontWeight: FontWeight.bold)):
+              ListView.separated(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) => buildPatientItemForAdmin(
-                    patientModel: cubit.patientModels![index], context: context),
+                    patientModel: cubit.searchedPatientModels!.isEmpty?cubit.patientModels![index]:cubit.searchedPatientModels![index], context: context),
                 separatorBuilder: (context, index) => SizedBox(
                   height: 10,
                 ),
-                itemCount: cubit.patientModels!.length,
+                itemCount: cubit.searchedPatientModels!.isEmpty?cubit.patientModels!.length:cubit.searchedPatientModels!.length,
 
               ),
             ),

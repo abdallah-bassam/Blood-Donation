@@ -1,4 +1,3 @@
-import 'package:blood_donation/models/donor_model.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/reusable_components.dart';
 import 'package:flutter/cupertino.dart';

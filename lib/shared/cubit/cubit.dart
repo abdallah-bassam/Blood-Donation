@@ -52,7 +52,11 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   TextEditingController timeDonateController = TextEditingController();
   int bloodTypeListForPatients = 0;
   List <dynamic>? patientModels = [];
+  List <dynamic>? searchedPatientModels = [];
   List <dynamic>? donorModels = [];
+  bool searchedPatientNotFound = false;
+
+  List <dynamic>? donorsForPatient = [];
 
   List <dynamic>? donorModelsAPlus = [];
   List <dynamic>? donorModelsAMinus = [];
@@ -124,6 +128,47 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     });
   }
 
+  void getPatientsBySearch({required firstName}) {
+    searchedPatientModels = [];
+    DioHelper.getDatabase(url: 'Patients/Fname/$firstName').then((value) async {
+      searchedPatientModels = await value.data;
+      if(searchedPatientModels!.isEmpty)
+        searchedPatientNotFound = true;
+      if(searchedPatientModels!.isNotEmpty)
+        searchedPatientNotFound = false;
+      emit(SuccessGetAllPatientsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllPatientsState());
+    });
+  }
+
+  void changeSearchedPatientNotFound()
+  {
+    searchedPatientModels = [];
+    searchedPatientNotFound = false;
+    emit(ChangeSearchedPatientNotFoundState());
+  }
+
+  // void getDonorsForPatient({required donorId, required patientId}) {
+  //   DioHelper.getDatabase(url: 'Patient/Donor/$patientId/Donor/$donorId').then((value) async {
+  //     donorsForPatient = await value.data;
+  //     emit(SuccessGetDonorsForPatientState());
+  //   }).catchError((error) {
+  //     print(error.toString());
+  //     emit(FailedGetDonorsForPatientState());
+  //   });
+  // }
+
+  Future<void> getDonorsForPatient({required int patientId}) async {
+    DioHelper.getDatabase(url: 'Patients/id/$patientId').then((value) async {
+      donorsForPatient = await value.data['donorS'];
+      emit(SuccessGetDonorsForPatientState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetDonorsForPatientState());
+    });
+  }
   void addPatient({required String firstDate,
     required String lastDate,
     required String firstName,
@@ -182,6 +227,8 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
       emit(FailedGetAllDonorsState());
     });
   }
+
+
 
   void changeIconInHospitalAList() {
     if (iconInHospitalAList == Icons.arrow_circle_down_rounded) {
@@ -315,6 +362,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   Hospital? selectedHospitalAddPatient;
   String selectedGenderAddPatientAsString = '';
   String selectedHospitalAddPatientAsString = '';
+  TextEditingController searchPatientsForAdminContoller = TextEditingController();
 
   TextEditingController firstNamePatientController = TextEditingController();
   TextEditingController lastNamePatientController = TextEditingController();

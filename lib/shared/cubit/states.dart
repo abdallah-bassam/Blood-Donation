@@ -39,6 +39,8 @@ class SuccessGetAllPatientsState extends BloodDonationStates{}
 class FailedGetAllPatientsState extends BloodDonationStates{}
 class SuccessGetAllDonorsState extends BloodDonationStates{}
 class FailedGetAllDonorsState extends BloodDonationStates{}
+class SuccessGetDonorsForPatientState extends BloodDonationStates{}
+class FailedGetDonorsForPatientState extends BloodDonationStates{}
 
 class SuccessAddPatientState extends BloodDonationStates{}
 class FailedAddPatientState extends BloodDonationStates{}
@@ -56,3 +58,4 @@ class ChangeIconInPatientListState extends BloodDonationStates{}
 class ChangeIsCheckedBoxState extends BloodDonationStates{}
 class ChangeSelectedItemForSignUpState extends BloodDonationStates{}
 class PushNotificationState extends BloodDonationStates{}
+class ChangeSearchedPatientNotFoundState extends BloodDonationStates{}

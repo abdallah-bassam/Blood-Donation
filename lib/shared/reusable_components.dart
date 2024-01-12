@@ -116,15 +116,57 @@ Widget sharedMaterialButtonApp(
 Widget sharedSearchBox({
   required BuildContext context,
 }) =>
-    TextFormField(
-      decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xFFB6B6B6), width: 2), // Customize the color here
+    Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: BloodDonationCubit.get(context).searchPatientsForAdminContoller,
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color(0xFFB6B6B6), width: 2), // Customize the color here
+                ),
+                label: sharedText(text: 'Search by name..', fontSize: 18),
+                prefixIcon: Icon(Icons.search)),
           ),
-          label: sharedText(text: 'Search by name..', fontSize: 18),
-          prefixIcon: Icon(Icons.search)),
+        ),
+        MaterialButton(
+          padding: EdgeInsets.only(left: 1),
+          onPressed: (){
+            BloodDonationCubit.get(context).getPatientsBySearch(firstName: BloodDonationCubit.get(context).searchPatientsForAdminContoller.text);
+          },
+          child: Container(
+            height: 45,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.red),
+            child: sharedText(
+                text: 'Search',
+                fontSize: 20,
+                color: Colors.white),
+          ),
+        ),
+        MaterialButton(
+          onPressed: (){
+            BloodDonationCubit.get(context).changeSearchedPatientNotFound();
+          },
+          child: Container(
+            height: 45,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.red),
+            child: sharedText(
+                text: 'All',
+                fontSize: 20,
+                color: Colors.white),
+          ),
+        ),
+      ],
     );
+
+
 
 Widget bloodTypesBoxForDonate(
     {required String bloodType,
@@ -598,7 +640,7 @@ Widget buildDonorsOfPatient(
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['name'],
+                        text: donorModel['first_Name'] + ' ' + donorModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -613,7 +655,7 @@ Widget buildDonorsOfPatient(
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['bloodType'],
+                        text: donorModel['blood_Type'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -627,7 +669,7 @@ Widget buildDonorsOfPatient(
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['number'], fontSize: 20),
+                    sharedText(text: donorModel['phone'].toString(), fontSize: 20),
                   ],
                 ),
                 Row(
@@ -757,12 +799,13 @@ Widget buildPatientItemForAdmin({
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     MaterialButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await BloodDonationCubit.get(context).getDonorsForPatient(patientId: patientModel['patient_Id']);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DonorsOfPatient()),
-                        );
+                              builder: (context) => DonorsOfPatient(),
+                        ));
                       },
                       child: Container(
                         height: 50,

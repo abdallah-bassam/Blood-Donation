@@ -73,7 +73,7 @@ class BloodDonation extends StatelessWidget {
                 elevation: 20,
               ),
             ),
-            home: AdminHomeLayout(),
+            home: DonorHomeLayout(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );
