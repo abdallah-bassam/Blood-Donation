@@ -1,3 +1,5 @@
+import '../shared/cubit/cubit.dart';
+
 class PatientModel{
   String name;
   String bloodType;
@@ -20,22 +22,6 @@ class PatientModel{
 // ];
 
 
-List <Map<String,String>> patientModels = [
-  {
-    'name': 'Ahmad Khaled','bloodType': 'A+','hospitalName': 'A'
-  },
-  {
-    'name': 'Omar Hasan','bloodType': 'B+','hospitalName': 'A'
-  },
-  { 'name': 'Aysar  Mohammad', 'bloodType': 'A+', 'hospitalName': 'B',},
-  { 'name': 'Mohammad Ahmad', 'bloodType': 'AB+', 'hospitalName': 'A',},
-  { 'name': 'Abdallah Yasin', 'bloodType': 'O+', 'hospitalName': 'C',},
-  { 'name': 'Khaled Ahmad', 'bloodType': 'O+', 'hospitalName': 'C',},
-  { 'name': 'abdulrahman hasan', 'bloodType': 'O-', 'hospitalName': 'B',},
-  { 'name': 'Hamza omar', 'bloodType': 'B-', 'hospitalName': 'A',},
-  { 'name': 'Ahmad Abdallah', 'bloodType': 'AB-', 'hospitalName': 'B',},
-  { 'name': 'Husam Ali', 'bloodType': 'A-', 'hospitalName': 'B',}
-];
 
 List <Map<String,String>> patientModelsAPlus = [
   {

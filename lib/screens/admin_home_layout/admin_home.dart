@@ -30,11 +30,13 @@ class AdminHome extends StatelessWidget {
                   sharedMaterialButtonApp(onPressed: (){
                     cubit.changeAdminHomeScreens(2);
                     cubit.changeIndexOfBottomNavBarAdmin(2);
+                    cubit.getAllPatients();
                   }, text: 'Patients and their donors', context: context,icon: Icons.list),
                   SizedBox(height: 25,),
                   sharedMaterialButtonApp(onPressed: (){
                     cubit.changeAdminHomeScreens(3);
                     cubit.changeIndexOfBottomNavBarAdmin(3);
+                    cubit.getAllDonors();
                   }, text: 'Donors', context: context,icon: Icons.bloodtype_rounded),
                 ],
               ),

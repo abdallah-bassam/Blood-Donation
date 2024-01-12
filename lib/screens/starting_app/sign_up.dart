@@ -251,8 +251,8 @@ class SignUp extends StatelessWidget {
                                     firstName: cubit.firstNameController.text,
                                     lastName: cubit.lastNameController.text,
                                     phoneNumber:
-                                        cubit.phoneNumberController.text,
-                                    age: cubit.ageController.text,
+                                    int.tryParse(cubit.phoneNumberController.text)??0,
+                                    age: int.tryParse(cubit.ageController.text)??0,
                                     gender:
                                         cubit.selectedGender == Gender.female
                                             ? 'female'
@@ -449,7 +449,6 @@ class SignUp extends StatelessWidget {
                                     }
                                     break;
                                 }
-                                formKey.currentState!.save();
                               }
                             },
                             text: "Sign Up"),

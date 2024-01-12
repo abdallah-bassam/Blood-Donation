@@ -24,9 +24,9 @@ class Donors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BloodDonationCubit,BloodDonationStates>(
-      listener: (context,states){},
-      builder: (context,states){
+    return BlocConsumer<BloodDonationCubit, BloodDonationStates>(
+      listener: (context, states) {},
+      builder: (context, states) {
         BloodDonationCubit cubit = BlocProvider.of(context);
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           sharedText(
@@ -37,7 +37,6 @@ class Donors extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-
           Container(
             height: 40,
             child: ListView.separated(
@@ -55,7 +54,25 @@ class Donors extends StatelessWidget {
             height: 15,
           ),
           Expanded(
-            child: cubit.bloodTypeListForDonors==0?listOfAllDonors():cubit.bloodTypeListForDonors==1?listOfAPlusDonors():cubit.bloodTypeListForDonors==3?listOfBPlusDonors():Container(),
+            child: cubit.bloodTypeListForDonors == 0
+                ? listOfAllDonors(context)
+                : cubit.bloodTypeListForDonors == 1
+                    ? listOfAPlusDonors(context)
+                    : cubit.bloodTypeListForDonors == 2
+                        ? listOfAMinusDonors(context)
+                        : cubit.bloodTypeListForDonors == 3
+                            ? listOfBPlusDonors(context)
+                            : cubit.bloodTypeListForDonors == 4
+                                ? listOfBMinusDonors(context)
+                                : cubit.bloodTypeListForDonors == 5
+                                    ? listOfABPlusDonors(context)
+                                    : cubit.bloodTypeListForDonors == 6
+                                        ? listOfABMinusDonors(context)
+                                        : cubit.bloodTypeListForDonors == 7
+                                            ? listOfOPlusDonors(context)
+                                            : cubit.bloodTypeListForDonors == 8
+                                                ? listOfOMinusDonors(context)
+                                                : Container(),
           ),
         ]);
       },

@@ -62,7 +62,7 @@ class Donate extends StatelessWidget {
             height: 15,
           ),
           Expanded(
-            child: cubit.bloodTypeListForPatients==0?listOfAllPatients():cubit.bloodTypeListForPatients==1?listOfAPlusPatients():cubit.bloodTypeListForPatients==3?listOfBPlusPatients():Container(),
+            child: cubit.bloodTypeListForPatients==0?listOfAllPatients(context):cubit.bloodTypeListForPatients==1?listOfAPlusPatients():cubit.bloodTypeListForPatients==3?listOfBPlusPatients():Container(),
           ),
         ]);
       },

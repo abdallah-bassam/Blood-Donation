@@ -51,7 +51,17 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   TextEditingController dateDonateController = TextEditingController();
   TextEditingController timeDonateController = TextEditingController();
   int bloodTypeListForPatients = 0;
-  int lengthOfList = patientModels.length;
+  List <dynamic>? patientModels = [];
+  List <dynamic>? donorModels = [];
+
+  List <dynamic>? donorModelsAPlus = [];
+  List <dynamic>? donorModelsAMinus = [];
+  List <dynamic>? donorModelsBPlus = [];
+  List <dynamic>? donorModelsBMinus = [];
+  List <dynamic>? donorModelsABPlus = [];
+  List <dynamic>? donorModelsABMinus = [];
+  List <dynamic>? donorModelsOPlus = [];
+  List <dynamic>? donorModelsOMinus = [];
 
   bool showInnerListForHospitalA = false;
   List<Widget> innerListForHospitalA = [];
@@ -68,31 +78,109 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     });
   }
 
-  void donorSignUp(
-      {required String email,
-      required String password,
-      required String firstName,
-      required String lastName,
-      required String phoneNumber,
-      required String age,
-      required String gender,
-      required String bloodType}) {
+  void donorSignUp({required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required int phoneNumber,
+    required int age,
+    required String gender,
+    required String bloodType}) {
     emit(LoadingSignUpState());
-    DioHelper.postToDatabase(url: '', data: {
-      "email": email,
-      "password": password,
-      "first name": firstName,
-      "last name": lastName,
-      "phone number": phoneNumber,
+    DioHelper.postToDatabase(url: 'Donors', data: {
+      "username": "$email",
+      "password": "$password",
+      "first_Name": "$firstName",
+      "last_Name": "$lastName",
+      "phone": phoneNumber,
       "age": age,
-      "gender": gender,
-      "blood type": bloodType
-    }).then((value){
+      "gender": "$gender",
+      "blood_Type": "$bloodType"
+    }).then((value) {
       emit(SuccessDonorSignUpState());
-    }).catchError((error){
+    }).catchError((error) {
       emit(FailedDonorSignUpState(error: error.toString()));
     });
+  }
 
+  // {
+  // "username": "abdallah.bmm@gmail.com",
+  // "last_Name": "Bassam",
+  // "gender": "male",
+  // "password": "123456",
+  // "age": 22,
+  // "blood_Type": "B+",
+  // "first_Name": "Abdallah",
+  // "phone": 797687622
+  // }
+
+  void getAllPatients() {
+    DioHelper.getDatabase(url: 'Patients/all').then((value) async {
+      patientModels = await value.data;
+      emit(SuccessGetAllPatientsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllPatientsState());
+    });
+  }
+
+  void addPatient({required String firstDate,
+    required String lastDate,
+    required String firstName,
+    required String lastName,
+    required String nameHospital,
+    required int age,
+    required String gender,
+    required String bloodType}) {
+    DioHelper.postToDatabase(url: 'Patients', data: {
+      "first_Date": "$firstDate",
+      "last_Date": "$lastDate",
+      "first_Name": "$firstName",
+      "last_Name": "$lastName",
+      "name_Hospital": nameHospital,
+      "age": age,
+      "gender": "$gender",
+      "blood_Type": "$bloodType"
+    }).then((value) {
+      emit(SuccessAddPatientState());
+    }).catchError((error) {
+      emit(FailedAddPatientState());
+    });
+  }
+
+  void getAllDonors() {
+    DioHelper.getDatabase(url: 'Donors/all').then((value) async {
+      donorModels = await value.data;
+      emit(SuccessGetAllDonorsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllDonorsState());
+    });
+  }
+
+  void getDonorsByBloodType({required bloodType}) {
+    DioHelper.getDatabase(url: 'Donors/Type/$bloodType').then((value) async {
+      if (bloodType == 'A+')
+        donorModelsAPlus = await value.data;
+      if (bloodType == 'A-')
+        donorModelsAMinus = await value.data;
+      if (bloodType == 'B+')
+        donorModelsBPlus = await value.data;
+      if (bloodType == 'B-')
+        donorModelsBMinus = await value.data;
+      if (bloodType == 'AB+')
+        donorModelsABPlus = await value.data;
+      if (bloodType == 'AB-')
+        donorModelsABMinus = await value.data;
+      if (bloodType == 'O+')
+        donorModelsOPlus = await value.data;
+      if (bloodType == 'O-')
+        donorModelsOMinus = await value.data;
+      emit(SuccessGetAllDonorsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllDonorsState());
+    });
   }
 
   void changeIconInHospitalAList() {
@@ -150,10 +238,6 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeShowInnerListHospitalBState());
   }
 
-  void changeLengthOfList(index) {
-    lengthOfList = index;
-    emit(ChangeLengthOfListState());
-  }
 
   void changeBloodTypeListForDonate(index) {
     bloodTypeListForPatients = index;
@@ -229,15 +313,18 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   IconData iconInPatientList = Icons.arrow_downward;
   Gender? selectedGenderAddPatient;
   Hospital? selectedHospitalAddPatient;
+  String selectedGenderAddPatientAsString = '';
+  String selectedHospitalAddPatientAsString = '';
+
   TextEditingController firstNamePatientController = TextEditingController();
   TextEditingController lastNamePatientController = TextEditingController();
   TextEditingController agePatientController = TextEditingController();
   TextEditingController firstDateToDonateController = TextEditingController();
   TextEditingController lastDateToDonateController = TextEditingController();
   TextEditingController hospitalWorkingTimeFromController =
-      TextEditingController();
+  TextEditingController();
   TextEditingController hospitalWorkingTimeToController =
-      TextEditingController();
+  TextEditingController();
 
   void changeIndexOfBottomNavBarAdmin(index) {
     currentIndexAdmin = index;
@@ -261,11 +348,25 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   void changeSelectedGenderForAddPatient(value) {
     selectedGenderAddPatient = value;
+
+    if (value == Gender.female)
+      selectedGenderAddPatientAsString = 'female';
+    if (value == Gender.male)
+      selectedGenderAddPatientAsString = 'male';
     emit(ChangeSelectedGenderForAddPatientState());
   }
 
   void changeSelectedHospitalForAddPatient(value) {
     selectedHospitalAddPatient = value;
+    print(value);
+    if (value == Hospital.university)
+      selectedHospitalAddPatientAsString = 'university';
+    if (value == Hospital.alameerhamza)
+      selectedHospitalAddPatientAsString = 'alameerhamza';
+    if (value == Hospital.Albasheer)
+      selectedHospitalAddPatientAsString = 'Albasheer';
+    print(selectedHospitalAddPatientAsString);
+
     emit(ChangeSelectedHospitalForAddPatientState());
   }
 
@@ -317,11 +418,11 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
         'Authorization': 'Bearer $value'
       };
       post(
-              Uri.parse(
-                  'https://fcm.googleapis.com/v1/projects/blood-donation-11584/messages:send'),
-              body: json.encode(body),
-              encoding: Encoding.getByName('utf-8'),
-              headers: headers)
+          Uri.parse(
+              'https://fcm.googleapis.com/v1/projects/blood-donation-11584/messages:send'),
+          body: json.encode(body),
+          encoding: Encoding.getByName('utf-8'),
+          headers: headers)
           .then((value) {})
           .catchError((error) {
         print(error.toString());
@@ -332,7 +433,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   Future<String> getAccessToken() async {
     final String response =
-        await rootBundle.loadString('assets/service-account.json');
+    await rootBundle.loadString('assets/service-account.json');
     final data = await json.decode(response);
     final credentials = ServiceAccountCredentials.fromJson(data);
 

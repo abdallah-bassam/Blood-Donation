@@ -2,15 +2,16 @@ import 'package:blood_donation/shared/reusable_components.dart';
 import 'package:flutter/material.dart';
 
 import '../models/patient_model.dart';
+import 'cubit/cubit.dart';
 
-Widget listOfAllPatients() => ListView.separated(
+Widget listOfAllPatients(context) => ListView.separated(
   physics: BouncingScrollPhysics(),
   itemBuilder: (context, index) => buildPatientItem(
-      context: context, patientModel: patientModels[index]),
+      context: context, patientModel: BloodDonationCubit.get(context).patientModels![index]),
   separatorBuilder: (context, index) => SizedBox(
     height: 10,
   ),
-  itemCount: patientModels.length,
+  itemCount: BloodDonationCubit.get(context).patientModels!.length,
 );
 
 Widget listOfAPlusPatients() => ListView.separated(

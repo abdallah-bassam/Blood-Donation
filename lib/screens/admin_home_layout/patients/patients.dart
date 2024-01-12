@@ -14,6 +14,7 @@ class Patients extends StatelessWidget {
     return BlocConsumer<BloodDonationCubit, BloodDonationStates>(
       listener: (context, states) {},
       builder: (context, states) {
+        BloodDonationCubit cubit = BlocProvider.of(context);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,11 +27,11 @@ class Patients extends StatelessWidget {
               child: ListView.separated(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) => buildPatientItemForAdmin(
-                    patientModel: patientModels[index], context: context),
+                    patientModel: cubit.patientModels![index], context: context),
                 separatorBuilder: (context, index) => SizedBox(
                   height: 10,
                 ),
-                itemCount: patientModels.length,
+                itemCount: cubit.patientModels!.length,
 
               ),
             ),

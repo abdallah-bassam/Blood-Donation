@@ -15,6 +15,7 @@ class SuccessDonorSignUpState extends BloodDonationStates{}
 class FailedDonorSignUpState extends BloodDonationStates{
   String error;
   FailedDonorSignUpState({required this.error});
+
 }
 class LoadingSignUpState extends BloodDonationStates{}
 class ChangeIndexOfBottomNavBarDonorState extends BloodDonationStates{}
@@ -34,6 +35,13 @@ class ChangeConfirmPasswordIconState extends BloodDonationStates{}
 class ChangeIsConfirmPasswordState extends BloodDonationStates{}
 class ChangeSelectedGenderState extends BloodDonationStates{}
 
+class SuccessGetAllPatientsState extends BloodDonationStates{}
+class FailedGetAllPatientsState extends BloodDonationStates{}
+class SuccessGetAllDonorsState extends BloodDonationStates{}
+class FailedGetAllDonorsState extends BloodDonationStates{}
+
+class SuccessAddPatientState extends BloodDonationStates{}
+class FailedAddPatientState extends BloodDonationStates{}
 // Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin
 
 class ChangeIndexOfBottomNavBarAdminState extends BloodDonationStates{}

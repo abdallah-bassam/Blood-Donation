@@ -5,6 +5,7 @@ import 'package:blood_donation/screens/donor_home_layout/profile/history_of_dona
 import 'package:blood_donation/screens/starting_app/forget_password.dart';
 import 'package:blood_donation/screens/starting_app/login.dart';
 import 'package:blood_donation/screens/starting_app/on_boarding.dart';
+import 'package:blood_donation/screens/starting_app/sign_up.dart';
 import 'package:blood_donation/screens/starting_app/splash_screen.dart';
 import 'package:blood_donation/shared/cubit/bloc_observer.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
@@ -16,6 +17,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
@@ -26,8 +29,6 @@ Future main()async{
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
-
-
   try {
     await Firebase.initializeApp();
     var token = await FirebaseMessaging.instance.getToken();
@@ -37,12 +38,9 @@ Future main()async{
     // Handle the error gracefully, such as displaying an error message or taking necessary actions.
   }
   runApp(const BloodDonation());
-
 }
-
 class BloodDonation extends StatelessWidget {
   const BloodDonation({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -75,7 +73,7 @@ class BloodDonation extends StatelessWidget {
                 elevation: 20,
               ),
             ),
-            home: DonorHomeLayout(),
+            home: AdminHomeLayout(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );

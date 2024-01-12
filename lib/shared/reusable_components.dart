@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 Widget sharedText(
-        {required String? text,
+        {required String text,
         required double? fontSize,
         Color? color,
         FontWeight? fontWeight}) =>
     Text(
-      text!,
+      text,
       style: TextStyle(
           fontSize: fontSize,
           color: color,
@@ -511,7 +511,7 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['name'],
+                        text: donorModel['first_Name'] + ' ' + donorModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -526,7 +526,7 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['bloodType'],
+                        text: donorModel['blood_Type'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -553,7 +553,7 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['age'], fontSize: 20),
+                    sharedText(text: donorModel['age'].toString(), fontSize: 20),
                   ],
                 ),
                 SizedBox(
@@ -565,7 +565,7 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['number'], fontSize: 20),
+                    sharedText(text: donorModel['phone'].toString(), fontSize: 20),
                   ],
                 ),
               ],
@@ -658,6 +658,7 @@ Widget bloodTypesBoxForDonors(
     onTap: () {
       BloodDonationCubit.get(context).changeSelectedItemForDonors(index);
       BloodDonationCubit.get(context).changeBloodTypeListForDonors(index);
+      BloodDonationCubit.get(context).getDonorsByBloodType(bloodType: bloodType);
       print(BloodDonationCubit.get(context).bloodTypeListForDonors);
     },
     child: Container(
@@ -718,7 +719,7 @@ Widget buildPatientItemForAdmin({
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['name'],
+                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -733,7 +734,7 @@ Widget buildPatientItemForAdmin({
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['bloodType'],
+                        text: patientModel['blood_Type'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -749,7 +750,7 @@ Widget buildPatientItemForAdmin({
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['hospitalName'], fontSize: 20),
+                        text: patientModel['name_Hospital'], fontSize: 20),
                   ],
                 ),
                 Row(

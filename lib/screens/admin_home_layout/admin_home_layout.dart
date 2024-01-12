@@ -50,10 +50,13 @@ class AdminHomeLayout extends StatelessWidget {
                 BottomNavigationBarItem(icon: IconButton(icon: Icon(Icons.list),onPressed: (){
                   cubit.changeAdminHomeScreens(2);
                   cubit.changeIndexOfBottomNavBarAdmin(2);
+                  cubit.getAllPatients();
+
                 },),label: 'Patients'),
                 BottomNavigationBarItem(icon: IconButton(icon: Icon(Icons.bloodtype_rounded),onPressed: (){
                   cubit.changeAdminHomeScreens(3);
                   cubit.changeIndexOfBottomNavBarAdmin(3);
+                  cubit.getAllDonors();
                 },),label: 'Donors'),
               ],
             ),
