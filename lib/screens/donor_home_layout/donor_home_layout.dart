@@ -54,6 +54,7 @@ class DonorHomeLayout extends StatelessWidget {
                 BottomNavigationBarItem(icon: IconButton(icon: Icon(Icons.notifications),onPressed: (){
                   cubit.changeDonorHomeScreens(3);
                   cubit.changeIndexOfBottomNavBarDonor(1);
+                  //cubit.getPatientsForNotifications(bloodType: 'A+');
                 },),label: 'Notifications'),
                 BottomNavigationBarItem(icon: IconButton(icon: Icon(Icons.person_rounded),onPressed: (){
                   cubit.changeDonorHomeScreens(4);

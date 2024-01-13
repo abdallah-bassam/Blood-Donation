@@ -11,6 +11,7 @@ class FailedUserLoginState extends BloodDonationStates{
   FailedUserLoginState({required this.error});
 }
 class LoadingLoginState extends BloodDonationStates{}
+class ChangeSuccessLoginState extends BloodDonationStates{}
 class SuccessDonorSignUpState extends BloodDonationStates{}
 class FailedDonorSignUpState extends BloodDonationStates{
   String error;

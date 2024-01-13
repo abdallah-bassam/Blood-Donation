@@ -104,3 +104,13 @@ Widget listOfOMinusPatients(context) => ListView.separated(
   ),
   itemCount: BloodDonationCubit.get(context).patientModelsOMinus!.length,
 );
+
+Widget listOfPatientsForNotifications(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsForNotifications![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsForNotifications!.length,
+);

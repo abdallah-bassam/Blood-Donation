@@ -1,3 +1,4 @@
+import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/screens/starting_app/sign_up.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
@@ -5,6 +6,10 @@ import 'package:blood_donation/shared/reusable_components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../shared/network/remote/dio_helper.dart';
+import '../admin_home_layout/admin_home_layout.dart';
+import '../donor_home_layout/donor_home_layout.dart';
 
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
@@ -79,16 +84,55 @@ class Login extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 60,),
-                        ConditionalBuilder(
-                            builder: (BuildContext context) => sharedMaterialButtonAccount(onPressed: (){
-                              if(formKey.currentState!.validate())
-                              {
-                                cubit.userLogin(email: cubit.emailController.text, password: cubit.passwordController.text);
+                        sharedMaterialButtonAccount(onPressed: ()async{
+                          if(formKey.currentState!.validate())
+                          {
+
+                            DioHelper.postToDatabase(
+                              url: 'api/login',
+                              data: {'email': cubit.emailController.text, 'password': cubit.passwordController.text},
+                            ).then((value) {
+                              if (value.data['Status']) {
+                                DioHelper.getDatabase(url: 'api/Donors/id/${value.data['id']}').then((value) {
+                                  userDonor = value.data;
+                                  userDonor['username'].toString().contains('admin') ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (loginContext) => AdminHomeLayout()),
+                                  ) : Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (loginContext) => DonorHomeLayout()),
+                                  );
+                                }).catchError((error) {
+                                  print(error.toString());
+                                });
                               }
-                            },text: "Login"),
-                            condition: states is! LoadingLoginState,
-                            fallback: (context) => CircularProgressIndicator()
-                        ),
+                              else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: null,
+                                      content: sharedText(
+                                        text: 'Email or Password Not Correct',
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Try again'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            }).catchError((error) {});
+
+                          }
+                        },text: "Login"),
                         SizedBox(height: 60,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

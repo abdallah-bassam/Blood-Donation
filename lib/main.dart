@@ -1,4 +1,6 @@
+
 import 'package:blood_donation/screens/admin_home_layout/admin_home_layout.dart';
+import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home_layout.dart';
 import 'package:blood_donation/screens/donor_home_layout/profile/edit_profile.dart';
 import 'package:blood_donation/screens/donor_home_layout/profile/history_of_donations.dart';
@@ -73,7 +75,7 @@ class BloodDonation extends StatelessWidget {
                 elevation: 20,
               ),
             ),
-            home: DonorHomeLayout(),
+            home: userDonor.isEmpty?SplashScreen():userDonor['username'].toString().contains('admin')?AdminHomeLayout():DonorHomeLayout(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );

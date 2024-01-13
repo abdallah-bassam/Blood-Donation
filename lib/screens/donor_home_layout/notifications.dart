@@ -1,5 +1,6 @@
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
+import 'package:blood_donation/shared/lists_of_patients.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/reusable_components.dart';
@@ -24,6 +25,10 @@ class Notifications extends StatelessWidget {
                   fontWeight: FontWeight.bold),
               sharedText(
                   text: "Emergency blood donation requests matching your blood type", fontSize: 20, color: Color(0xFFB6B6B6)),
+              SizedBox(
+                height: 15,
+              ),
+              Expanded(child: listOfPatientsForNotifications(context))
             ],
           ),
         );

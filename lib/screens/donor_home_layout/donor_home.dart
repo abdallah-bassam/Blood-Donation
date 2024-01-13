@@ -6,24 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../shared/reusable_components.dart';
 
-Map<dynamic, dynamic> userDonor = {
-  "First_Name": "Hussein",
-  "Last_Name": "Hroup",
-  "Phone": 791202959,
-  "Age": 22,
-  "Username": "Hussein",
-  "Gender": "male",
-  "Blood_Type": "B+",
-  "password": "24680",
-  "username": "Hussein",
-  "last_Name": "Hroup",
-  "age": 22,
-  "blood_Type": "B+",
-  "phone": 791202959,
-  "gender": "male",
-  "first_Name": "Hussein",
-  "donor_id": 1
-};
+Map<dynamic, dynamic> userDonor = {};
 
 class DonorHome extends StatelessWidget {
   DonorHome({Key? key}) : super(key: key);
@@ -122,6 +105,7 @@ class DonorHome extends StatelessWidget {
                       onPressed: () {
                         cubit.changeDonorHomeScreens(3);
                         cubit.changeIndexOfBottomNavBarDonor(1);
+                        cubit.getPatientsForNotifications(bloodType: 'A+');
                       },
                       text: 'Notifications',
                       context: context,
