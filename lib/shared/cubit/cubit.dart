@@ -85,6 +85,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   List<dynamic>? patientModelsOPlus = [];
   List<dynamic>? patientModelsOMinus = [];
   List<dynamic>? patientModelsForNotifications = [];
+  List<dynamic>? historyOfDonations = [];
 
   List<dynamic> patientModelsAlBashirHospital = [];
   List<dynamic> patientModelsPrinceHamzahHospital = [];
@@ -181,6 +182,15 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   void getAllPatients() {
     DioHelper.getDatabase(url: 'api/Patients/all').then((value) async {
       patientModels = await value.data;
+      emit(SuccessGetAllPatientsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllPatientsState());
+    });
+  }
+  void getPatientsForDonor(patientId) {
+    DioHelper.getDatabase(url: 'api/Patients/id/${patientId}').then((value) async {
+      historyOfDonations!.add(value.data);
       emit(SuccessGetAllPatientsState());
     }).catchError((error) {
       print(error.toString());

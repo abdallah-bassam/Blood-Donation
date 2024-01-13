@@ -449,6 +449,7 @@ Widget buildPatientItem(
                         child: MaterialButton(
                           onPressed: () {
                             BloodDonationCubit.get(context).postDonorToPatient(donorId: 19, patientId: patientModel['patient_Id']);
+                            BloodDonationCubit.get(context).getPatientsForDonor(patientModel['patient_Id']);
                             Navigator.of(context).pop();
                             showDialog(
                                 context: context,
@@ -497,6 +498,96 @@ Widget buildPatientItem(
                     child: sharedText(
                         text: 'Donate', fontSize: 20, color: Colors.white),
                   ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+
+Widget buildHistoryOfDonations(
+    {required BuildContext context, required patientModel}) =>
+    Container(
+      height: 180,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10.0, left: 10.0, bottom: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.person_rounded),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    sharedText(
+                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ],
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.bloodtype),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    sharedText(
+                        text: patientModel['blood_Type'],
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ],
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.location_pin),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    sharedText(
+                        text: patientModel['name_Hospital'].toString(), fontSize: 20),
+                  ],
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.date_range),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    sharedText(
+                        text: patientModel['first_Date'].toString(), fontSize: 20),
+                  ],
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.date_range),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    sharedText(
+                        text: patientModel['last_Date'].toString(), fontSize: 20),
+                  ],
                 ),
               ],
             ),

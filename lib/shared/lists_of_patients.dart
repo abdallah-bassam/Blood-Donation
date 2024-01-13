@@ -114,3 +114,13 @@ Widget listOfPatientsForNotifications(context) => ListView.separated(
   ),
   itemCount: BloodDonationCubit.get(context).patientModelsForNotifications!.length,
 );
+
+Widget listOfHistoryOfDonations(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildHistoryOfDonations(
+      context: context, patientModel: BloodDonationCubit.get(context).historyOfDonations![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).historyOfDonations!.length,
+);
