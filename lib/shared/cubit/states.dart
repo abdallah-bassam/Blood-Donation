@@ -31,6 +31,10 @@ class ChangeShowInnerListHospitalBState extends BloodDonationStates{}
 class ChangeIconInHospitalBListState extends BloodDonationStates{}
 class AddToInnerListForHospitalBState extends BloodDonationStates{}
 
+class ChangeShowInnerListHospitalCState extends BloodDonationStates{}
+class ChangeIconInHospitalCListState extends BloodDonationStates{}
+class AddToInnerListForHospitalCState extends BloodDonationStates{}
+
 class ChangeConfirmPasswordIconState extends BloodDonationStates{}
 class ChangeIsConfirmPasswordState extends BloodDonationStates{}
 class ChangeSelectedGenderState extends BloodDonationStates{}

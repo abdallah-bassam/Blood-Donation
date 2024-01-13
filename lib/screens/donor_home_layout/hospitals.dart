@@ -45,7 +45,7 @@ class Hospitals extends StatelessWidget {
                     children: [
                       Icon(Icons.local_hospital,color: Colors.white,),
                       SizedBox(width: 4,),
-                      sharedText(text: 'Hospital A',fontSize: 22,fontWeight: FontWeight.w500,color: Colors.white),
+                      sharedText(text: 'Al-Bashir Hospital',fontSize: 22,fontWeight: FontWeight.w500,color: Colors.white),
                       Spacer(),
                       IconButton(icon: Icon(cubit.iconInHospitalAList,size: 35),color: Colors.white,onPressed: (){
                         cubit.changeIconInHospitalAList();
@@ -90,7 +90,7 @@ class Hospitals extends StatelessWidget {
                     children: [
                       Icon(Icons.local_hospital,color: Colors.white,),
                       SizedBox(width: 4,),
-                      sharedText(text: 'Hospital B',fontSize: 22,fontWeight: FontWeight.w500,color: Colors.white),
+                      sharedText(text: 'Prince Hamzah Hospital',fontSize: 22,fontWeight: FontWeight.w500,color: Colors.white),
                       Spacer(),
                       IconButton(icon: Icon(cubit.iconInHospitalBList,size: 35),color: Colors.white,onPressed: (){
                         cubit.changeIconInHospitalBList();
@@ -119,7 +119,50 @@ class Hospitals extends StatelessWidget {
                       .toList(),
                 ),
 
+              SizedBox(
+                  height: 15
+              ),
 
+              Container(
+                height: 55,
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.local_hospital,color: Colors.white,),
+                      SizedBox(width: 4,),
+                      sharedText(text: 'University of Jordan',fontSize: 22,fontWeight: FontWeight.w500,color: Colors.white),
+                      Spacer(),
+                      IconButton(icon: Icon(cubit.iconInHospitalCList,size: 35),color: Colors.white,onPressed: (){
+                        cubit.changeIconInHospitalCList();
+                        cubit.addToInnerListForHospitalC(context);
+                        cubit.changeShowInnerListForHospitalC();
+                      },)
+                    ],
+                  ),
+                  onTap: () {
+                    cubit.changeIconInHospitalCList();
+                    cubit.addToInnerListForHospitalC(context);
+                    cubit.changeShowInnerListForHospitalC();
+                  },
+                ),
+              ),
+              if (cubit.showInnerListForHospitalC)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: cubit.innerListForHospitalC!
+                      .map((innerItem) => Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: ListTile(
+                      title: innerItem,
+                    ),
+                  ))
+                      .toList(),
+                ),
 
             ],
           ),

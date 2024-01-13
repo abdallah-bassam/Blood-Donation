@@ -137,9 +137,7 @@ class AddPatients extends StatelessWidget {
                                 context: context,
                                 hospital: Hospital.values[index],
                                 textHospital: hospitalsForAddPatients[index]),
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: 1,
-                            ),
+                        separatorBuilder: (context, index) => SizedBox(height: 1,),
                         itemCount: Hospital.values.length),
                   ),
                   SizedBox(

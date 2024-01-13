@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/network/remote/dio_helper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,12 +17,13 @@ import 'package:path/path.dart' as path;
 
 enum Gender { male, female }
 
-enum Hospital { Albasheer, alameerhamza, university }
+enum Hospital { AlBashirHospital, UniversityofJordanHospital, PrinceHamzahHospital }
 
 List<String> hospitalsForAddPatients = [
-  'Albasheer',
-  'alameer hamza',
-  'university'
+  'Al-Bashir Hospital',
+  'Prince Hamzah Hospital',
+  'University of Jordan Hospital',
+
 ];
 
 class BloodDonationCubit extends Cubit<BloodDonationStates> {
@@ -77,9 +79,10 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   List <dynamic>? patientModelsOPlus = [];
   List <dynamic>? patientModelsOMinus = [];
 
-  bool showInnerListForHospitalA = false;
-  List<Widget> innerListForHospitalA = [];
-  IconData iconInHospitalAList = Icons.arrow_circle_down_rounded;
+  List <dynamic> patientModelsAlBashirHospital = [];
+  List <dynamic> patientModelsPrinceHamzahHospital = [];
+  List <dynamic> patientModelsUniversityOfJordanHospital = [];
+
 
   void userLogin({required String email, required String password}) {
     emit(LoadingLoginState());
@@ -253,6 +256,9 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   }
 
 
+  bool showInnerListForHospitalA = false;
+  List<Widget> innerListForHospitalA = [];
+  IconData iconInHospitalAList = Icons.arrow_circle_down_rounded;
 
   void changeIconInHospitalAList() {
     if (iconInHospitalAList == Icons.arrow_circle_down_rounded) {
@@ -263,12 +269,15 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeIconInHospitalAListState());
   }
 
-  void addToInnerListForHospitalA(BuildContext context) {
+  void addToInnerListForHospitalA(BuildContext context) async {
     innerListForHospitalA = [];
-    for (int index = 0; index < patientModelsAHospital.length; index++) {
+    await DioHelper.getDatabase(url: 'api/Patients/Hospital/Al-Bashir Hospital').then((value) {
+      patientModelsAlBashirHospital = value.data;
+    });
+    for (int index = 0; index < patientModelsAlBashirHospital.length; index++) {
       innerListForHospitalA.add(buildPatientItem(
         context: context,
-        patientModel: patientModelsAHospital[index],
+        patientModel: patientModelsAlBashirHospital[index],
       ));
     }
     emit(AddToInnerListForHospitalAState());
@@ -292,21 +301,56 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeIconInHospitalBListState());
   }
 
-  void addToInnerListForHospitalB(BuildContext context) {
+  void addToInnerListForHospitalB(BuildContext context)async{
     innerListForHospitalB = [];
-    for (int index = 0; index < patientModelsBHospital.length; index++) {
+    await DioHelper.getDatabase(url: 'api/Patients/Hospital/Prince Hamzah Hospital').then((value) {
+      patientModelsPrinceHamzahHospital = value.data;
+    });
+    for (int index = 0; index < patientModelsPrinceHamzahHospital.length; index++) {
       innerListForHospitalB.add(buildPatientItem(
         context: context,
-        patientModel: patientModelsBHospital[index],
+        patientModel: patientModelsPrinceHamzahHospital[index],
       ));
     }
-
     emit(AddToInnerListForHospitalBState());
   }
 
   void changeShowInnerListForHospitalB() {
     showInnerListForHospitalB = !showInnerListForHospitalB;
     emit(ChangeShowInnerListHospitalBState());
+  }
+
+
+  bool showInnerListForHospitalC = false;
+  List<Widget> innerListForHospitalC = [];
+  IconData iconInHospitalCList = Icons.arrow_circle_down_rounded;
+
+  void changeIconInHospitalCList() {
+    if (iconInHospitalCList == Icons.arrow_circle_down_rounded) {
+      iconInHospitalCList = Icons.arrow_circle_up_rounded;
+    } else {
+      iconInHospitalCList = Icons.arrow_circle_down_rounded;
+    }
+    emit(ChangeIconInHospitalCListState());
+  }
+
+  void addToInnerListForHospitalC(BuildContext context)async{
+    innerListForHospitalC = [];
+    await DioHelper.getDatabase(url: 'api/Patients/Hospital/University of Jordan Hospital').then((value) {
+      patientModelsUniversityOfJordanHospital = value.data;
+    });
+    for (int index = 0; index < patientModelsUniversityOfJordanHospital.length; index++) {
+      innerListForHospitalC.add(buildPatientItem(
+        context: context,
+        patientModel: patientModelsUniversityOfJordanHospital[index],
+      ));
+    }
+    emit(AddToInnerListForHospitalCState());
+  }
+
+  void changeShowInnerListForHospitalC() {
+    showInnerListForHospitalC = !showInnerListForHospitalC;
+    emit(ChangeShowInnerListHospitalCState());
   }
 
 
@@ -430,15 +474,12 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   void changeSelectedHospitalForAddPatient(value) {
     selectedHospitalAddPatient = value;
-    print(value);
-    if (value == Hospital.university)
-      selectedHospitalAddPatientAsString = 'university';
-    if (value == Hospital.alameerhamza)
-      selectedHospitalAddPatientAsString = 'alameerhamza';
-    if (value == Hospital.Albasheer)
-      selectedHospitalAddPatientAsString = 'Albasheer';
-    print(selectedHospitalAddPatientAsString);
-
+    if (value == Hospital.PrinceHamzahHospital)
+      selectedHospitalAddPatientAsString = 'Prince Hamzah Hospital';
+    if (value == Hospital.UniversityofJordanHospital)
+      selectedHospitalAddPatientAsString = 'University of Jordan Hospital';
+    if (value == Hospital.AlBashirHospital)
+      selectedHospitalAddPatientAsString = 'Al-Bashir Hospital';
     emit(ChangeSelectedHospitalForAddPatientState());
   }
 
