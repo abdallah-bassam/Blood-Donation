@@ -41,9 +41,10 @@ class SuccessGetAllDonorsState extends BloodDonationStates{}
 class FailedGetAllDonorsState extends BloodDonationStates{}
 class SuccessGetDonorsForPatientState extends BloodDonationStates{}
 class FailedGetDonorsForPatientState extends BloodDonationStates{}
-
 class SuccessAddPatientState extends BloodDonationStates{}
 class FailedAddPatientState extends BloodDonationStates{}
+class SuccessPostDonorToPatient extends BloodDonationStates{}
+class FailedPostDonorToPatient extends BloodDonationStates{}
 // Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin
 
 class ChangeIndexOfBottomNavBarAdminState extends BloodDonationStates{}

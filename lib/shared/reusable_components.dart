@@ -176,6 +176,7 @@ Widget bloodTypesBoxForDonate(
     onTap: () {
       BloodDonationCubit.get(context).changeSelectedItemForDonate(index);
       BloodDonationCubit.get(context).changeBloodTypeListForDonate(index);
+      BloodDonationCubit.get(context).getPatientsByBloodType(bloodType: bloodType);
     },
     child: Container(
       padding: EdgeInsets.all(8),
@@ -276,7 +277,7 @@ Widget buildPatientItem(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['name'],
+                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -291,7 +292,7 @@ Widget buildPatientItem(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['bloodType'],
+                        text: patientModel['blood_Type'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -306,7 +307,7 @@ Widget buildPatientItem(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['hospitalName'], fontSize: 20),
+                        text: patientModel['name_Hospital'].toString(), fontSize: 20),
                   ],
                 ),
               ],
@@ -319,7 +320,7 @@ Widget buildPatientItem(
                     return alert(
                       context,
                       title: sharedText(
-                          text: 'Donate for ${patientModel['name']}',
+                          text: 'Donate for ${patientModel['first_Name']}',
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                       content: Column(
@@ -333,7 +334,7 @@ Widget buildPatientItem(
                               Flexible(
                                   child: sharedText(
                                       text:
-                                          'Donation is available from #Day to #Day',
+                                          'Donation is available from ${patientModel['first_Date']} to ${patientModel['last_Date']}',
                                       fontSize: 18)),
                             ],
                           ),
@@ -348,7 +349,7 @@ Widget buildPatientItem(
                               ),
                               Flexible(
                                 child: sharedText(
-                                    text: 'Hospital working hours........', fontSize: 18),
+                                    text: 'Hospital working hours From 8:00 to 3:00', fontSize: 18),
                               ),
                             ],
                           ),
@@ -361,7 +362,7 @@ Widget buildPatientItem(
                               SizedBox(
                                 width: 5,
                               ),
-                              sharedText(text: 'Location', fontSize: 18),
+                              sharedText(text: patientModel['name_Hospital'], fontSize: 18),
                             ],
                           ),
                           SizedBox(
@@ -447,6 +448,7 @@ Widget buildPatientItem(
                       textOK: Center(
                         child: MaterialButton(
                           onPressed: () {
+                            BloodDonationCubit.get(context).postDonorToPatient(donorId: 19, patientId: patientModel['patient_Id']);
                             Navigator.of(context).pop();
                             showDialog(
                                 context: context,

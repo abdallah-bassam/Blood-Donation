@@ -1,3 +1,4 @@
+import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/screens/donor_home_layout/profile/edit_profile.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
@@ -29,12 +30,12 @@ class Profile extends StatelessWidget {
                       backgroundColor: Colors.red,
                       radius: 45,
                     ),
-                    sharedText(text: 'A', fontSize: 60,color: Colors.white)
+                    sharedText(text: userDonor['first_Name'].toString().substring(0,1), fontSize: 60,color: Colors.white)
                   ],
                 ),
                 SizedBox(height: 8,),
-                sharedText(text: 'Ahmad Mohammad', fontSize: 20,fontWeight: FontWeight.bold),
-                sharedText(text: 'ahmad_mohammad@gmail.com', fontSize: 18,color: Colors.grey),
+                sharedText(text: userDonor['first_Name'], fontSize: 20,fontWeight: FontWeight.bold),
+                sharedText(text: userDonor['username'], fontSize: 18,color: Colors.grey),
                 SizedBox(height: 50,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +51,7 @@ class Profile extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          sharedText(text: 'O+', fontSize: 20),
+                          sharedText(text: userDonor['blood_Type'], fontSize: 20),
                           SizedBox(height: 5,),
                           sharedText(text: 'Blood Type', fontSize: 20),
                         ],

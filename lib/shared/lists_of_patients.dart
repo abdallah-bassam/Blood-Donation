@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 import '../models/patient_model.dart';
 import 'cubit/cubit.dart';
 
+Widget listOfSearchedPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).searchedPatientModels![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).searchedPatientModels!.length,
+);
+
 Widget listOfAllPatients(context) => ListView.separated(
   physics: BouncingScrollPhysics(),
   itemBuilder: (context, index) => buildPatientItem(
@@ -14,25 +24,92 @@ Widget listOfAllPatients(context) => ListView.separated(
   itemCount: BloodDonationCubit.get(context).patientModels!.length,
 );
 
-Widget listOfAPlusPatients() => ListView.separated(
+Widget listOfAPlusPatients(context) => ListView.separated(
   physics: BouncingScrollPhysics(),
   itemBuilder: (context, index) => buildPatientItem(
-      context: context, patientModel: patientModelsAPlus[index]),
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsAPlus![index]),
   separatorBuilder: (context, index) => SizedBox(
     height: 10,
   ),
-  itemCount: patientModelsAPlus.length,
+  itemCount: BloodDonationCubit.get(context).patientModelsAPlus!.length,
 );
 
-Widget listOfBPlusPatients() => ListView.separated(
+Widget listOfAMinusPatients(context) => ListView.separated(
   physics: BouncingScrollPhysics(),
   itemBuilder: (context, index) => buildPatientItem(
-      context: context, patientModel: patientModelsBPlus[index]),
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsAMinus![index]),
   separatorBuilder: (context, index) => SizedBox(
     height: 10,
   ),
-  itemCount: patientModelsBPlus.length,
+  itemCount: BloodDonationCubit.get(context).patientModelsAMinus!.length,
 );
+
+Widget listOfBPlusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsBPlus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsBPlus!.length,
+);
+
+Widget listOfBMinusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsBMinus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsBMinus!.length,
+);
+
+Widget listOfABPlusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsABPlus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsABPlus!.length,
+);
+
+Widget listOfABMinusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsABMinus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsABMinus!.length,
+);
+
+Widget listOfOPlusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsOPlus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsOPlus!.length,
+);
+
+
+Widget listOfOMinusPatients(context) => ListView.separated(
+  physics: BouncingScrollPhysics(),
+  itemBuilder: (context, index) => buildPatientItem(
+      context: context, patientModel: BloodDonationCubit.get(context).patientModelsOMinus![index]),
+  separatorBuilder: (context, index) => SizedBox(
+    height: 10,
+  ),
+  itemCount: BloodDonationCubit.get(context).patientModelsOMinus!.length,
+);
+
+
+
+
+
+
 
 Widget listOfPatientsInAHospital() => ListView.separated(
   physics: BouncingScrollPhysics(),

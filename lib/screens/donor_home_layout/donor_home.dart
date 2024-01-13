@@ -27,7 +27,7 @@ Map<dynamic, dynamic> userDonor = {
 
 class DonorHome extends StatelessWidget {
   DonorHome({Key? key}) : super(key: key);
-  //String name = ;
+  String name = userDonor["first_Name"] + ' ' + userDonor["last_Name"];
   List<NotesModel> notes = [
     NotesModel(
         image: 'assets/images/eat_well.png',
@@ -100,6 +100,7 @@ class DonorHome extends StatelessWidget {
                   sharedMaterialButtonApp(
                       onPressed: () {
                         cubit.changeDonorHomeScreens(1);
+                        cubit.getAllPatients();
                       },
                       text: 'Donate',
                       context: context,

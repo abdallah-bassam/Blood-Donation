@@ -5,7 +5,7 @@ class DioHelper {
 
   static init() {
     dio = Dio(BaseOptions(
-        baseUrl: 'http://192.168.1.17:8080/api/',
+        baseUrl: 'http://192.168.1.17:8080/',
         receiveDataWhenStatusError: true));
   }
 
@@ -22,7 +22,7 @@ class DioHelper {
   static Future<Response> putToDatabase({
     required String url,
     Map<String, dynamic>? query,
-    required Map<String, dynamic> data,
+    Map<String, dynamic>? data,
   }) async {
     return await dio!.put(url, queryParameters: query, data: data);
   }

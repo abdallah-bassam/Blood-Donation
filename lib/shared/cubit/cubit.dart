@@ -67,6 +67,16 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   List <dynamic>? donorModelsOPlus = [];
   List <dynamic>? donorModelsOMinus = [];
 
+
+  List <dynamic>? patientModelsAPlus = [];
+  List <dynamic>? patientModelsAMinus = [];
+  List <dynamic>? patientModelsBPlus = [];
+  List <dynamic>? patientModelsBMinus = [];
+  List <dynamic>? patientModelsABPlus = [];
+  List <dynamic>? patientModelsABMinus = [];
+  List <dynamic>? patientModelsOPlus = [];
+  List <dynamic>? patientModelsOMinus = [];
+
   bool showInnerListForHospitalA = false;
   List<Widget> innerListForHospitalA = [];
   IconData iconInHospitalAList = Icons.arrow_circle_down_rounded;
@@ -91,7 +101,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     required String gender,
     required String bloodType}) {
     emit(LoadingSignUpState());
-    DioHelper.postToDatabase(url: 'Donors', data: {
+    DioHelper.postToDatabase(url: 'api/Donors', data: {
       "username": "$email",
       "password": "$password",
       "first_Name": "$firstName",
@@ -107,19 +117,9 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     });
   }
 
-  // {
-  // "username": "abdallah.bmm@gmail.com",
-  // "last_Name": "Bassam",
-  // "gender": "male",
-  // "password": "123456",
-  // "age": 22,
-  // "blood_Type": "B+",
-  // "first_Name": "Abdallah",
-  // "phone": 797687622
-  // }
 
   void getAllPatients() {
-    DioHelper.getDatabase(url: 'Patients/all').then((value) async {
+    DioHelper.getDatabase(url: 'api/Patients/all').then((value) async {
       patientModels = await value.data;
       emit(SuccessGetAllPatientsState());
     }).catchError((error) {
@@ -130,7 +130,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
   void getPatientsBySearch({required firstName}) {
     searchedPatientModels = [];
-    DioHelper.getDatabase(url: 'Patients/Fname/$firstName').then((value) async {
+    DioHelper.getDatabase(url: 'api/Patients/Fname/$firstName').then((value) async {
       searchedPatientModels = await value.data;
       if(searchedPatientModels!.isEmpty)
         searchedPatientNotFound = true;
@@ -150,18 +150,17 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     emit(ChangeSearchedPatientNotFoundState());
   }
 
-  // void getDonorsForPatient({required donorId, required patientId}) {
-  //   DioHelper.getDatabase(url: 'Patient/Donor/$patientId/Donor/$donorId').then((value) async {
-  //     donorsForPatient = await value.data;
-  //     emit(SuccessGetDonorsForPatientState());
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(FailedGetDonorsForPatientState());
-  //   });
-  // }
+  void postDonorToPatient({required donorId, required patientId}) {
+    DioHelper.putToDatabase(url: 'Patient/Donor/$patientId/Donor/$donorId').then((value) async {
+      emit(SuccessPostDonorToPatient());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedPostDonorToPatient());
+    });
+  }
 
   Future<void> getDonorsForPatient({required int patientId}) async {
-    DioHelper.getDatabase(url: 'Patients/id/$patientId').then((value) async {
+    DioHelper.getDatabase(url: 'api/Patients/id/$patientId').then((value) async {
       donorsForPatient = await value.data['donorS'];
       emit(SuccessGetDonorsForPatientState());
     }).catchError((error) {
@@ -177,7 +176,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     required int age,
     required String gender,
     required String bloodType}) {
-    DioHelper.postToDatabase(url: 'Patients', data: {
+    DioHelper.postToDatabase(url: 'api/Patients', data: {
       "first_Date": "$firstDate",
       "last_Date": "$lastDate",
       "first_Name": "$firstName",
@@ -194,7 +193,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   }
 
   void getAllDonors() {
-    DioHelper.getDatabase(url: 'Donors/all').then((value) async {
+    DioHelper.getDatabase(url: 'api/Donors/all').then((value) async {
       donorModels = await value.data;
       emit(SuccessGetAllDonorsState());
     }).catchError((error) {
@@ -204,7 +203,7 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   }
 
   void getDonorsByBloodType({required bloodType}) {
-    DioHelper.getDatabase(url: 'Donors/Type/$bloodType').then((value) async {
+    DioHelper.getDatabase(url: 'api/Donors/Type/$bloodType').then((value) async {
       if (bloodType == 'A+')
         donorModelsAPlus = await value.data;
       if (bloodType == 'A-')
@@ -225,6 +224,31 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     }).catchError((error) {
       print(error.toString());
       emit(FailedGetAllDonorsState());
+    });
+  }
+
+  void getPatientsByBloodType({required bloodType}) {
+    DioHelper.getDatabase(url: 'api/Donors/Type/$bloodType').then((value) async {
+      if (bloodType == 'A+')
+        patientModelsAPlus = await value.data;
+      if (bloodType == 'A-')
+        patientModelsAMinus = await value.data;
+      if (bloodType == 'B+')
+        patientModelsBPlus = await value.data;
+      if (bloodType == 'B-')
+        patientModelsBMinus = await value.data;
+      if (bloodType == 'AB+')
+        patientModelsABPlus = await value.data;
+      if (bloodType == 'AB-')
+        patientModelsABMinus = await value.data;
+      if (bloodType == 'O+')
+        patientModelsOPlus = await value.data;
+      if (bloodType == 'O-')
+        patientModelsOMinus = await value.data;
+      emit(SuccessGetAllPatientsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(FailedGetAllPatientsState());
     });
   }
 

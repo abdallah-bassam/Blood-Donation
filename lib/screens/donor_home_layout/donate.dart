@@ -50,11 +50,15 @@ class Donate extends StatelessWidget {
             child: ListView.separated(
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => bloodTypesBoxForDonate(
-                  bloodType: bloodTypes[index], context: context, index: index),
-              separatorBuilder: (context, index) => SizedBox(
-                width: 8,
-              ),
+              itemBuilder: (context, index) =>
+                  bloodTypesBoxForDonate(
+                      bloodType: bloodTypes[index],
+                      context: context,
+                      index: index),
+              separatorBuilder: (context, index) =>
+                  SizedBox(
+                    width: 8,
+                  ),
               itemCount: bloodTypes.length,
             ),
           ),
@@ -62,7 +66,22 @@ class Donate extends StatelessWidget {
             height: 15,
           ),
           Expanded(
-            child: cubit.bloodTypeListForPatients==0?listOfAllPatients(context):cubit.bloodTypeListForPatients==1?listOfAPlusPatients():cubit.bloodTypeListForPatients==3?listOfBPlusPatients():Container(),
+            child: cubit.searchedPatientNotFound?Center(child: sharedText(text: 'Not Found', fontSize: 30,fontWeight: FontWeight.bold)):
+            cubit.searchedPatientModels!.isNotEmpty?listOfSearchedPatients(context):
+            cubit.bloodTypeListForPatients == 0 ? listOfAllPatients(
+                context) : cubit.bloodTypeListForPatients == 1
+                ? listOfAPlusPatients(context)
+                : cubit.bloodTypeListForPatients == 2 ? listOfAMinusPatients(
+                context) : cubit.bloodTypeListForPatients == 3
+                ? listOfBPlusPatients(context)
+                : cubit.bloodTypeListForPatients == 4 ? listOfBMinusPatients(
+                context) : cubit.bloodTypeListForPatients == 5
+                ? listOfABPlusPatients(context)
+                : cubit.bloodTypeListForPatients == 6 ? listOfABMinusPatients(
+                context) : cubit.bloodTypeListForPatients == 7
+                ? listOfOPlusPatients(context)
+                : cubit.bloodTypeListForPatients == 8 ? listOfOMinusPatients(
+                context):Container()
           ),
         ]);
       },
