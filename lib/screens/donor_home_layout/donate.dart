@@ -76,11 +76,11 @@ class Donate extends StatelessWidget {
                 ? listOfBPlusPatients(context)
                 : cubit.bloodTypeListForPatients == 4 ? listOfBMinusPatients(
                 context) : cubit.bloodTypeListForPatients == 5
-                ? listOfABPlusPatients(context)
-                : cubit.bloodTypeListForPatients == 6 ? listOfABMinusPatients(
-                context) : cubit.bloodTypeListForPatients == 7
                 ? listOfOPlusPatients(context)
-                : cubit.bloodTypeListForPatients == 8 ? listOfOMinusPatients(
+                : cubit.bloodTypeListForPatients == 6 ? listOfOMinusPatients(
+                context) : cubit.bloodTypeListForPatients == 7
+                ? listOfABPlusPatients(context)
+                : cubit.bloodTypeListForPatients == 8 ? listOfABMinusPatients(
                 context):Container()
           ),
         ]);

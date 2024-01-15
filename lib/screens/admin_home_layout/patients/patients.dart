@@ -22,6 +22,39 @@ class Patients extends StatelessWidget {
             sharedText(text: "Increase the donor's achievements from show donors", fontSize: 20,color: Color(0xFFB6B6B6)),
             SizedBox(height: 20,),
             sharedSearchBox(context: context),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    cubit.deleteOldPatients();
+                    AlertDialog(
+                      title: null,
+                      content: sharedText(
+                          text: 'Deleted Successfully',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                  child: Container(
+                    height: 45,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10), color: Colors.red),
+                    child: sharedText(text: 'Delete old patients', fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 10,),
             Expanded(
               child: cubit.searchedPatientNotFound?Center(child: sharedText(text: 'Not Found', fontSize: 30,fontWeight: FontWeight.bold)):

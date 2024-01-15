@@ -5,6 +5,7 @@ import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/reusable_components.dart';
+import '../../starting_app/login.dart';
 import 'history_of_donations.dart';
 
 class Profile extends StatelessWidget {
@@ -70,7 +71,7 @@ class Profile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
 
                         children: [
-                          sharedText(text: '3', fontSize: 20),
+                          sharedText(text: userDonor['counter'].toString(), fontSize: 20),
                           SizedBox(height: 5,),
                           sharedText(text: 'Donations', fontSize: 20),
                         ],
@@ -95,7 +96,21 @@ class Profile extends StatelessWidget {
                   );
                 }, text: 'History of donations', context: context,icon: Icons.history,width: 300),
                 SizedBox(height: 30,),
-                sharedMaterialButtonApp(onPressed: (){}, text: 'Logout', context: context,icon: Icons.logout,width: 300),
+                sharedMaterialButtonApp(onPressed: (){
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Login()),
+                  );
+                  cubit.firstNameController.text = '';
+                  cubit.lastNameController.text = '';
+                  cubit.ageController.text = '';
+                  cubit.phoneNumberController.text = '';
+                  cubit.genderController.text = '';
+                  cubit.emailController.text = '';
+                  cubit.passwordController.text = '';
+                  cubit.confirmPasswordController.text = '';
+                }, text: 'Logout', context: context,icon: Icons.logout,width: 300),
               ],
             ),
           ),

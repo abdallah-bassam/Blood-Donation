@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/cubit/cubit.dart';
 import '../../shared/reusable_components.dart';
+import '../starting_app/login.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class AdminHome extends StatelessWidget {
                     cubit.changeAdminHomeScreens(2);
                     cubit.changeIndexOfBottomNavBarAdmin(2);
                     cubit.getAllPatients();
+                    //cubit.deleteOldPatients();
                   }, text: 'Patients and their donors', context: context,icon: Icons.list),
                   SizedBox(height: 25,),
                   sharedMaterialButtonApp(onPressed: (){
@@ -38,6 +40,22 @@ class AdminHome extends StatelessWidget {
                     cubit.changeIndexOfBottomNavBarAdmin(3);
                     cubit.getAllDonors();
                   }, text: 'Donors', context: context,icon: Icons.bloodtype_rounded),
+                  SizedBox(height: 25,),
+                  sharedMaterialButtonApp(onPressed: (){
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Login()),
+                    );
+                    cubit.firstNameController.text = '';
+                    cubit.lastNameController.text = '';
+                    cubit.ageController.text = '';
+                    cubit.phoneNumberController.text = '';
+                    cubit.genderController.text = '';
+                    cubit.emailController.text = '';
+                    cubit.passwordController.text = '';
+                    cubit.confirmPasswordController.text = '';
+                  }, text: 'Logout', context: context,icon: Icons.logout),
                 ],
               ),
             ),

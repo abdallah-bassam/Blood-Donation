@@ -105,7 +105,7 @@ class DonorHome extends StatelessWidget {
                       onPressed: () {
                         cubit.changeDonorHomeScreens(3);
                         cubit.changeIndexOfBottomNavBarDonor(1);
-                        cubit.getPatientsForNotifications(bloodType: 'A+');
+                        cubit.getPatientsForNotifications(bloodType: userDonor['blood_Type']);
                       },
                       text: 'Notifications',
                       context: context,

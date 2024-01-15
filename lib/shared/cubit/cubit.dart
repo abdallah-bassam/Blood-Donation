@@ -175,19 +175,65 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     }).then((value) {
       emit(SuccessDonorSignUpState());
     }).catchError((error) {
+      print(error.toString());
       emit(FailedDonorSignUpState(error: error.toString()));
+    });
+  }
+
+
+  void donorEditProfile(
+      {required String email,
+        required String password,
+        required String firstName,
+        required String lastName,
+        required int phoneNumber,
+        required int age,
+        required String gender,
+        required String bloodType,
+        required donor_id
+      }) {
+    emit(LoadingSignUpState());
+    DioHelper.putToDatabase(url: 'api/Donors', data: {
+      "username": "$email",
+      "password": "$password",
+      "first_Name": "$firstName",
+      "last_Name": "$lastName",
+      "phone": phoneNumber,
+      "age": age,
+      "gender": "$gender",
+      "blood_Type": "$bloodType",
+      "donor_id": donor_id
+    }).then((value) {
+      emit(SuccessDonorEditProfileState());
+    }).catchError((error) {
+      emit(FailedDonorEditProfileState());
     });
   }
 
   void getAllPatients() {
     DioHelper.getDatabase(url: 'api/Patients/all').then((value) async {
-      patientModels = await value.data;
+      patientModels = value.data;
       emit(SuccessGetAllPatientsState());
     }).catchError((error) {
       print(error.toString());
       emit(FailedGetAllPatientsState());
     });
   }
+
+  void deleteOldPatients() async
+  {
+
+    for (var patient in patientModels!) {
+      int x = int.tryParse(patient['first_Date'].toString().substring(4,6))??0;
+      int y = int.tryParse(patient['last_Date'].toString().substring(4,6))??0;
+      if((y-x) <0)
+      {
+        DioHelper.deleteFromDatabase(url: 'api/Patients/Delete/${patient['patient_Id']}');
+      }
+    }
+    emit(DeleteOldPatientsState());
+  }
+
   void getPatientsForDonor(patientId) {
     DioHelper.getDatabase(url: 'api/Patients/id/${patientId}').then((value) async {
       historyOfDonations!.add(value.data);
@@ -196,6 +242,11 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
       print(error.toString());
       emit(FailedGetAllPatientsState());
     });
+  }
+
+  void deletePatientFromDonor(model) {
+    historyOfDonations!.remove(model);
+    emit(DeletePatientFromDonorState());
   }
 
   void getPatientsBySearch({required firstName}) {
@@ -326,91 +377,65 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
     });
   }
 
-  void getPatientsForNotifications({required bloodType}) {
+  void getPatientsForNotifications({required bloodType}) async {
     if (bloodType == 'A+') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/A+').then((value) {
-        patientModelsForNotifications=value.data;
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/A+');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB+');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data];
     }
     if (bloodType == 'A-') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/A-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB-');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/A-');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data];
     }
     if (bloodType == 'B+') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/B+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/B+');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB+');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data];
     }
     if (bloodType == 'B-') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/B-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB-');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/B-');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data];
     }
     if (bloodType == 'AB+') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB+');
+
+      patientModelsForNotifications = response1.data;
     }
     if (bloodType == 'AB-') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB-');
+      patientModelsForNotifications = response1.data;
     }
     if (bloodType == 'O+') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/A+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/B+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/O+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB+');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/A+');
+      final response3 = await DioHelper.getDatabase(url: 'api/Patients/Type/O+');
+      final response4 = await DioHelper.getDatabase(url: 'api/Patients/Type/B+');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data, ...response3.data, ...response4.data];
     }
     if (bloodType == 'O-') {
-      DioHelper.getDatabase(url: 'api/Patients/Type/A+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/B+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/O+').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/A-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/AB-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/O-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
-      DioHelper.getDatabase(url: 'api/Patients/Type/B-').then((value) {
-        patientModelsForNotifications!.add(value.data);
-      });
+      final response1 = await DioHelper.getDatabase(url: 'api/Patients/Type/AB+');
+      final response2 = await DioHelper.getDatabase(url: 'api/Patients/Type/A+');
+      final response3 = await DioHelper.getDatabase(url: 'api/Patients/Type/O+');
+      final response4 = await DioHelper.getDatabase(url: 'api/Patients/Type/B+');
+      final response5 = await DioHelper.getDatabase(url: 'api/Patients/Type/O-');
+      final response6 = await DioHelper.getDatabase(url: 'api/Patients/Type/B-');
+      final response7 = await DioHelper.getDatabase(url: 'api/Patients/Type/O-');
+      final response8 = await DioHelper.getDatabase(url: 'api/Patients/Type/A-');
+
+      patientModelsForNotifications = [...response1.data, ...response2.data, ...response3.data, ...response4.data, ...response5.data, ...response6.data, ...response7.data, ...response8.data];
     }
     emit(SuccessGetAllPatientsState());
   }
+
+
+
 
   bool showInnerListForHospitalA = false;
   List<Widget> innerListForHospitalA = [];
@@ -595,7 +620,8 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
   String selectedHospitalAddPatientAsString = '';
   TextEditingController searchPatientsForAdminContoller =
       TextEditingController();
-
+  int donationMadeForPatientId = 0;
+  String donationMadeForPatientName = '';
   TextEditingController firstNamePatientController = TextEditingController();
   TextEditingController lastNamePatientController = TextEditingController();
   TextEditingController agePatientController = TextEditingController();
@@ -692,17 +718,19 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
         'content-type': 'application/json',
         'Authorization': 'Bearer $value'
       };
+      print(value);
       post(
               Uri.parse(
                   'https://fcm.googleapis.com/v1/projects/blood-donation-11584/messages:send'),
               body: json.encode(body),
               encoding: Encoding.getByName('utf-8'),
               headers: headers)
-          .then((value) {})
+          .then((value) {
+        emit(PushNotificationState());
+      })
           .catchError((error) {
         print(error.toString());
       });
-      emit(PushNotificationState());
     });
   }
 
@@ -721,5 +749,29 @@ class BloodDonationCubit extends Cubit<BloodDonationStates> {
 
     final accessToken = await client.credentials.accessToken;
     return accessToken.data;
+  }
+
+  void donationMade({required patientId,required donorId})
+  {
+    DioHelper.putToDatabase(url: 'Patient/Donor/$patientId/Donor/$donorId').then((value) {
+      emit(DonationMadeState());
+    }).catchError((error){
+      emit(FailedDonationMadeState());
+    });
+  }
+  void deleteDonorToPatient({required patientId,required donorId})
+  {
+    DioHelper.deleteFromDatabase(url: 'Patient/Donor/$patientId/Donor/$donorId').then((value) {
+      emit(DeleteDonorToPatientState());
+    }).catchError((error){
+      emit(FailedDeleteDonorToPatientState());
+    });
+  }
+
+  void saveDonationMadeForPatientId(id,name)
+  {
+    donationMadeForPatientId = id;
+    donationMadeForPatientName = name;
+    emit(SaveDonationMadeForPatientIdState());
   }
 }

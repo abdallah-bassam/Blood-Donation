@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
 
 class DioHelper {
+
   static Dio? dio;
 
   static init() {
-    dio = Dio(BaseOptions(
-        baseUrl: 'http://192.168.1.17:8080/',
-        receiveDataWhenStatusError: true));
+    dio = Dio(
+      BaseOptions(
+          baseUrl: 'http://10.248.50.146:8080/',
+          receiveDataWhenStatusError: true,
+      ),
+    );
   }
 
   static Future<Response> getDatabase(
@@ -15,8 +19,10 @@ class DioHelper {
   }
 
   static Future<Response> postToDatabase(
-      {required url, Map <String,dynamic>? query, required Map <String,dynamic> data}) {
-    return dio!.post(url,queryParameters: query,data: data);
+      {required url,
+      Map<String, dynamic>? query,
+      required Map<String, dynamic> data}) {
+    return dio!.post(url, queryParameters: query, data: data);
   }
 
   static Future<Response> putToDatabase({
@@ -33,5 +39,4 @@ class DioHelper {
   }) async {
     return await dio!.delete(url, queryParameters: query);
   }
-
 }

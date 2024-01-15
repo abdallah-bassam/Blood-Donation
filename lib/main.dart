@@ -1,4 +1,3 @@
-
 import 'package:blood_donation/screens/admin_home_layout/admin_home_layout.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home_layout.dart';
@@ -18,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -75,7 +72,7 @@ class BloodDonation extends StatelessWidget {
                 elevation: 20,
               ),
             ),
-            home: userDonor.isEmpty?SplashScreen():userDonor['username'].toString().contains('admin')?AdminHomeLayout():DonorHomeLayout(),
+             home: SplashScreen(),
             debugShowCheckedModeBanner: false,
             //title: 'Flutter Demo',
           );
@@ -84,4 +81,3 @@ class BloodDonation extends StatelessWidget {
     );
   }
 }
-

@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/network/remote/dio_helper.dart';
 import '../admin_home_layout/admin_home_layout.dart';
 import '../donor_home_layout/donor_home_layout.dart';
+import 'forget_password.dart';
 
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
@@ -80,7 +81,12 @@ class Login extends StatelessWidget {
                             }, icon: Icon(cubit.rememberMeIcon)),
                             sharedText(text: 'Remember Me', fontSize: 16),
                             Spacer(),
-                            TextButton(onPressed: (){}, child: sharedText(text: 'Forget Password?', fontSize: 18))
+                            TextButton(onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ForgetPassword()),
+                              );
+                            }, child: sharedText(text: 'Forget Password?', fontSize: 18))
                           ],
                         ),
                         SizedBox(height: 60,),
@@ -95,6 +101,13 @@ class Login extends StatelessWidget {
                               if (value.data['Status']) {
                                 DioHelper.getDatabase(url: 'api/Donors/id/${value.data['id']}').then((value) {
                                   userDonor = value.data;
+                                  cubit.firstNameController.text = userDonor['first_Name'];
+                                  cubit.lastNameController.text = userDonor['last_Name'];
+                                  cubit.ageController.text = userDonor['age'].toString();
+                                  cubit.phoneNumberController.text = userDonor['phone'].toString();
+                                  cubit.emailController.text = userDonor['username'];
+                                  cubit.passwordController.text = userDonor['password'];
+                                  cubit.confirmPasswordController.text = userDonor['password'];
                                   userDonor['username'].toString().contains('admin') ? Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (loginContext) => AdminHomeLayout()),
@@ -129,9 +142,7 @@ class Login extends StatelessWidget {
                                   },
                                 );
                               }
-                            }).catchError((error) {});
-
-                          }
+                            }).catchError((error) {});}
                         },text: "Login"),
                         SizedBox(height: 60,),
                         Row(

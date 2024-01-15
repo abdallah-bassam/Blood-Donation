@@ -1,6 +1,7 @@
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/screens/admin_home_layout/patients/donors_of_patient.dart';
+import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +45,7 @@ Widget sharedTextFormField({
             borderSide: BorderSide(
                 color: Color(0xFFB6B6B6), width: 2), // Customize the color here
           ),
-          label: Text(label!),
+          label: label==null?null:Text(label!),
           hintText: hintText,
           suffixIcon: suffix != null
               ? IconButton(
@@ -101,7 +102,7 @@ Widget sharedMaterialButtonApp(
                     color: Colors.black,
                     fontWeight: FontWeight.w600),
               ),
-          //    Spacer(),
+              //    Spacer(),
               Icon(
                 icon,
                 color: Colors.red,
@@ -120,11 +121,13 @@ Widget sharedSearchBox({
       children: [
         Expanded(
           child: TextFormField(
-            controller: BloodDonationCubit.get(context).searchPatientsForAdminContoller,
+            controller:
+                BloodDonationCubit.get(context).searchPatientsForAdminContoller,
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Color(0xFFB6B6B6), width: 2), // Customize the color here
+                      color: Color(0xFFB6B6B6),
+                      width: 2), // Customize the color here
                 ),
                 label: sharedText(text: 'Search by name..', fontSize: 18),
                 prefixIcon: Icon(Icons.search)),
@@ -132,41 +135,35 @@ Widget sharedSearchBox({
         ),
         MaterialButton(
           padding: EdgeInsets.only(left: 1),
-          onPressed: (){
-            BloodDonationCubit.get(context).getPatientsBySearch(firstName: BloodDonationCubit.get(context).searchPatientsForAdminContoller.text);
+          onPressed: () {
+            BloodDonationCubit.get(context).getPatientsBySearch(
+                firstName: BloodDonationCubit.get(context)
+                    .searchPatientsForAdminContoller
+                    .text);
           },
           child: Container(
             height: 45,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.red),
-            child: sharedText(
-                text: 'Search',
-                fontSize: 20,
-                color: Colors.white),
+                borderRadius: BorderRadius.circular(10), color: Colors.red),
+            child:
+                sharedText(text: 'Search', fontSize: 20, color: Colors.white),
           ),
         ),
         MaterialButton(
-          onPressed: (){
+          onPressed: () {
             BloodDonationCubit.get(context).changeSearchedPatientNotFound();
           },
           child: Container(
             height: 45,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.red),
-            child: sharedText(
-                text: 'All',
-                fontSize: 20,
-                color: Colors.white),
+                borderRadius: BorderRadius.circular(10), color: Colors.red),
+            child: sharedText(text: 'All', fontSize: 20, color: Colors.white),
           ),
         ),
       ],
     );
-
-
 
 Widget bloodTypesBoxForDonate(
     {required String bloodType,
@@ -176,7 +173,8 @@ Widget bloodTypesBoxForDonate(
     onTap: () {
       BloodDonationCubit.get(context).changeSelectedItemForDonate(index);
       BloodDonationCubit.get(context).changeBloodTypeListForDonate(index);
-      BloodDonationCubit.get(context).getPatientsByBloodType(bloodType: bloodType);
+      BloodDonationCubit.get(context)
+          .getPatientsByBloodType(bloodType: bloodType);
     },
     child: Container(
       padding: EdgeInsets.all(8),
@@ -277,7 +275,9 @@ Widget buildPatientItem(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
+                        text: patientModel['first_Name'] +
+                            ' ' +
+                            patientModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -307,7 +307,8 @@ Widget buildPatientItem(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['name_Hospital'].toString(), fontSize: 20),
+                        text: patientModel['name_Hospital'].toString(),
+                        fontSize: 20),
                   ],
                 ),
               ],
@@ -349,7 +350,9 @@ Widget buildPatientItem(
                               ),
                               Flexible(
                                 child: sharedText(
-                                    text: 'Hospital working hours From 8:00 to 3:00', fontSize: 18),
+                                    text:
+                                        'Hospital working hours From 8:00 to 3:00',
+                                    fontSize: 18),
                               ),
                             ],
                           ),
@@ -362,7 +365,9 @@ Widget buildPatientItem(
                               SizedBox(
                                 width: 5,
                               ),
-                              sharedText(text: patientModel['name_Hospital'], fontSize: 18),
+                              sharedText(
+                                  text: patientModel['name_Hospital'],
+                                  fontSize: 18),
                             ],
                           ),
                           SizedBox(
@@ -448,8 +453,11 @@ Widget buildPatientItem(
                       textOK: Center(
                         child: MaterialButton(
                           onPressed: () {
-                            BloodDonationCubit.get(context).postDonorToPatient(donorId: 19, patientId: patientModel['patient_Id']);
-                            BloodDonationCubit.get(context).getPatientsForDonor(patientModel['patient_Id']);
+                            BloodDonationCubit.get(context).postDonorToPatient(
+                                donorId: userDonor['donor_id'],
+                                patientId: patientModel['patient_Id']);
+                            BloodDonationCubit.get(context).getPatientsForDonor(
+                                patientModel['patient_Id']);
                             Navigator.of(context).pop();
                             showDialog(
                                 context: context,
@@ -506,11 +514,10 @@ Widget buildPatientItem(
       ),
     );
 
-
 Widget buildHistoryOfDonations(
-    {required BuildContext context, required patientModel}) =>
+        {required BuildContext context, required patientModel}) =>
     Container(
-      height: 180,
+      height: 230,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
@@ -530,7 +537,9 @@ Widget buildHistoryOfDonations(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
+                        text: patientModel['first_Name'] +
+                            ' ' +
+                            patientModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -560,7 +569,8 @@ Widget buildHistoryOfDonations(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['name_Hospital'].toString(), fontSize: 20),
+                        text: patientModel['name_Hospital'].toString(),
+                        fontSize: 20),
                   ],
                 ),
                 SizedBox(
@@ -573,7 +583,8 @@ Widget buildHistoryOfDonations(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['first_Date'].toString(), fontSize: 20),
+                        text: patientModel['first_Date'].toString(),
+                        fontSize: 20),
                   ],
                 ),
                 SizedBox(
@@ -586,7 +597,31 @@ Widget buildHistoryOfDonations(
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['last_Date'].toString(), fontSize: 20),
+                        text: patientModel['last_Date'].toString(),
+                        fontSize: 20),
+                  ],
+                ),
+                SizedBox(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        BloodDonationCubit.get(context).deletePatientFromDonor(patientModel);
+                      },
+                      child: Container(
+                        height: 50,
+                        padding: EdgeInsets.all(10),
+                        width: 70,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.red),
+                        child: sharedText(
+                            text: 'Done',
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -646,7 +681,9 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['first_Name'] + ' ' + donorModel['last_Name'],
+                        text: donorModel['first_Name'] +
+                            ' ' +
+                            donorModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -656,7 +693,10 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                 ),
                 Row(
                   children: [
-                    Icon(Icons.bloodtype,color: Colors.red,),
+                    Icon(
+                      Icons.bloodtype,
+                      color: Colors.red,
+                    ),
                     SizedBox(
                       width: 5,
                     ),
@@ -671,12 +711,13 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                 ),
                 Row(
                   children: [
-                    donorModel['gender']=='male'?Icon(Icons.male):Icon(Icons.female),
+                    donorModel['gender'] == 'male'
+                        ? Icon(Icons.male)
+                        : Icon(Icons.female),
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(
-                        text: donorModel['gender'], fontSize: 20),
+                    sharedText(text: donorModel['gender'], fontSize: 20),
                   ],
                 ),
                 SizedBox(
@@ -688,7 +729,8 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['age'].toString(), fontSize: 20),
+                    sharedText(
+                        text: donorModel['age'].toString(), fontSize: 20),
                   ],
                 ),
                 SizedBox(
@@ -700,7 +742,8 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['phone'].toString(), fontSize: 20),
+                    sharedText(
+                        text: donorModel['phone'].toString(), fontSize: 20),
                   ],
                 ),
               ],
@@ -713,7 +756,7 @@ Widget buildDonorItem({required BuildContext context, required donorModel}) =>
 Widget buildDonorsOfPatient(
         {required BuildContext context, required donorModel}) =>
     Container(
-      height: 165,
+      height: 170,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
@@ -733,7 +776,9 @@ Widget buildDonorsOfPatient(
                       width: 5,
                     ),
                     sharedText(
-                        text: donorModel['first_Name'] + ' ' + donorModel['last_Name'],
+                        text: donorModel['first_Name'] +
+                            ' ' +
+                            donorModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -762,19 +807,34 @@ Widget buildDonorsOfPatient(
                     SizedBox(
                       width: 5,
                     ),
-                    sharedText(text: donorModel['phone'].toString(), fontSize: 20),
+                    sharedText(
+                        text: donorModel['phone'].toString(), fontSize: 20),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    sharedText(text: 'Donation made', fontSize: 18),
-                    Checkbox(
-                      value: BloodDonationCubit.get(context).isChecked,
-                      onChanged: (bool? value) {
-                        BloodDonationCubit.get(context).changeIsCheckedBox();
+                    MaterialButton(
+                      onPressed: (){
+                        BloodDonationCubit.get(context).donationMade(patientId: BloodDonationCubit.get(context).donationMadeForPatientId, donorId: donorModel['donor_id']);
+                        BloodDonationCubit.get(context).deleteDonorToPatient(patientId: BloodDonationCubit.get(context).donationMadeForPatientId,donorId: donorModel['donor_id']);
+                        BloodDonationCubit.get(context)
+                            .getDonorsForPatient(
+                            patientId: BloodDonationCubit.get(context).donationMadeForPatientId);
                       },
-                    )
+                      child: Container(
+                        height: 50,
+                        padding: EdgeInsets.all(10),
+                        width: 165,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.red),
+                        child: sharedText(
+                            text: 'Donation made',
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -793,7 +853,8 @@ Widget bloodTypesBoxForDonors(
     onTap: () {
       BloodDonationCubit.get(context).changeSelectedItemForDonors(index);
       BloodDonationCubit.get(context).changeBloodTypeListForDonors(index);
-      BloodDonationCubit.get(context).getDonorsByBloodType(bloodType: bloodType);
+      BloodDonationCubit.get(context)
+          .getDonorsByBloodType(bloodType: bloodType);
       print(BloodDonationCubit.get(context).bloodTypeListForDonors);
     },
     child: Container(
@@ -854,7 +915,9 @@ Widget buildPatientItemForAdmin({
                       width: 5,
                     ),
                     sharedText(
-                        text: patientModel['first_Name'] + ' ' + patientModel['last_Name'],
+                        text: patientModel['first_Name'] +
+                            ' ' +
+                            patientModel['last_Name'],
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ],
@@ -893,12 +956,15 @@ Widget buildPatientItemForAdmin({
                   children: [
                     MaterialButton(
                       onPressed: () async {
-                        await BloodDonationCubit.get(context).getDonorsForPatient(patientId: patientModel['patient_Id']);
+                        await BloodDonationCubit.get(context)
+                            .getDonorsForPatient(
+                                patientId: patientModel['patient_Id']);
+                        BloodDonationCubit.get(context).saveDonationMadeForPatientId(patientModel['patient_Id'],patientModel['first_Name'] + ' ' + patientModel['last_Name']);
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                            context,
+                            MaterialPageRoute(
                               builder: (context) => DonorsOfPatient(),
-                        ));
+                            ));
                       },
                       child: Container(
                         height: 50,
@@ -924,8 +990,8 @@ Widget buildPatientItemForAdmin({
 
 Widget bloodTypesBoxForSignUp(
     {required BuildContext context,
-      required String bloodType,
-      required int index}) {
+    required String bloodType,
+    required int index}) {
   return GestureDetector(
     //behavior: HitTestBehavior.translucent, // Add this line
     onTap: () {
@@ -945,9 +1011,9 @@ Widget bloodTypesBoxForSignUp(
         children: [
           Icon(Icons.bloodtype_outlined,
               color:
-              BloodDonationCubit.get(context).selectedIndexSignUp == index
-                  ? Colors.white
-                  : Colors.black),
+                  BloodDonationCubit.get(context).selectedIndexSignUp == index
+                      ? Colors.white
+                      : Colors.black),
           SizedBox(
             width: 4,
           ),

@@ -50,6 +50,11 @@ class SuccessAddPatientState extends BloodDonationStates{}
 class FailedAddPatientState extends BloodDonationStates{}
 class SuccessPostDonorToPatient extends BloodDonationStates{}
 class FailedPostDonorToPatient extends BloodDonationStates{}
+
+class SuccessDonorEditProfileState extends BloodDonationStates{}
+class FailedDonorEditProfileState extends BloodDonationStates{}
+
+class DeletePatientFromDonorState extends BloodDonationStates{}
 // Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin Admin
 
 class ChangeIndexOfBottomNavBarAdminState extends BloodDonationStates{}
@@ -65,3 +70,10 @@ class ChangeIsCheckedBoxState extends BloodDonationStates{}
 class ChangeSelectedItemForSignUpState extends BloodDonationStates{}
 class PushNotificationState extends BloodDonationStates{}
 class ChangeSearchedPatientNotFoundState extends BloodDonationStates{}
+class DonationMadeState extends BloodDonationStates{}
+class FailedDonationMadeState extends BloodDonationStates{}
+class SaveDonationMadeForPatientIdState extends BloodDonationStates{}
+class DeleteDonorToPatientState extends BloodDonationStates{}
+class FailedDeleteDonorToPatientState extends BloodDonationStates{}
+class DeleteOldPatientsState extends BloodDonationStates{}
+class FailedDeleteOldPatientsState extends BloodDonationStates{}

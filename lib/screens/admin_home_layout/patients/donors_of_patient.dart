@@ -16,7 +16,7 @@ class DonorsOfPatient extends StatelessWidget {
         BloodDonationCubit cubit = BlocProvider.of(context);
         return Scaffold(
             appBar: AppBar(
-              title: sharedText(text: 'Donors of nameOfPatient', fontSize: 22,color: Colors.black),
+              title: sharedText(text: 'Donors of ${cubit.donationMadeForPatientName}', fontSize: 22,color: Colors.black),
             ),
             body: SafeArea(
                 child: Padding(
@@ -26,9 +26,7 @@ class DonorsOfPatient extends StatelessWidget {
                     itemBuilder: (context, index) => buildDonorsOfPatient(context: context, donorModel: cubit.donorsForPatient![index]),
                     separatorBuilder: (context, index) => SizedBox(height: 10,),
                     itemCount: cubit.donorsForPatient!.length,
-
                   ),
-
                 )));
       },
     );

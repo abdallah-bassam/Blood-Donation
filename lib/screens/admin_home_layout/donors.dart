@@ -64,13 +64,13 @@ class Donors extends StatelessWidget {
                             : cubit.bloodTypeListForDonors == 4
                                 ? listOfBMinusDonors(context)
                                 : cubit.bloodTypeListForDonors == 5
-                                    ? listOfABPlusDonors(context)
+                                    ? listOfOPlusDonors(context)
                                     : cubit.bloodTypeListForDonors == 6
-                                        ? listOfABMinusDonors(context)
+                                        ? listOfOMinusDonors(context)
                                         : cubit.bloodTypeListForDonors == 7
-                                            ? listOfOPlusDonors(context)
+                                            ? listOfABPlusDonors(context)
                                             : cubit.bloodTypeListForDonors == 8
-                                                ? listOfOMinusDonors(context)
+                                                ? listOfABMinusDonors(context)
                                                 : Container(),
           ),
         ]);

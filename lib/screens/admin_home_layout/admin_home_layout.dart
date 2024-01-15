@@ -51,7 +51,7 @@ class AdminHomeLayout extends StatelessWidget {
                   cubit.changeAdminHomeScreens(2);
                   cubit.changeIndexOfBottomNavBarAdmin(2);
                   cubit.getAllPatients();
-
+                  cubit.deleteOldPatients();
                 },),label: 'Patients'),
                 BottomNavigationBarItem(icon: IconButton(icon: Icon(Icons.bloodtype_rounded),onPressed: (){
                   cubit.changeAdminHomeScreens(3);

@@ -245,40 +245,6 @@ class SignUp extends StatelessWidget {
                                   cubit.selectedGender != null &&
                                   cubit.selectedIndexSignUp != -1)
                               {
-                                cubit.donorSignUp(
-                                    email: cubit.emailController.text,
-                                    password: cubit.passwordController.text,
-                                    firstName: cubit.firstNameController.text,
-                                    lastName: cubit.lastNameController.text,
-                                    phoneNumber:
-                                    int.tryParse(cubit.phoneNumberController.text)??0,
-                                    age: int.tryParse(cubit.ageController.text)??0,
-                                    gender:
-                                        cubit.selectedGender == Gender.female
-                                            ? 'female'
-                                            : 'male',
-                                    bloodType: bloodTypes[cubit.selectedIndexSignUp]);
-
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: null,
-                                      content: sharedText(
-                                          text: 'Sign Up Successfully',
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
                                 switch (bloodTypes[cubit.selectedIndexSignUp]) {
                                   case 'A+':
                                     {
@@ -449,6 +415,40 @@ class SignUp extends StatelessWidget {
                                     }
                                     break;
                                 }
+                                cubit.donorSignUp(
+                                    email: cubit.emailController.text,
+                                    password: cubit.passwordController.text,
+                                    firstName: cubit.firstNameController.text,
+                                    lastName: cubit.lastNameController.text,
+                                    phoneNumber:
+                                    int.tryParse(cubit.phoneNumberController.text)??0,
+                                    age: int.tryParse(cubit.ageController.text)??0,
+                                    gender:
+                                        cubit.selectedGender == Gender.female
+                                            ? 'female'
+                                            : 'male',
+                                    bloodType: bloodTypes[cubit.selectedIndexSignUp]);
+
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: null,
+                                      content: sharedText(
+                                          text: 'Sign Up Successfully',
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               }
                             },
                             text: "Sign Up"),
