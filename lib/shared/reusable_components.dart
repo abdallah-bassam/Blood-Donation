@@ -1,5 +1,4 @@
 import 'package:alert_dialog/alert_dialog.dart';
-import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/screens/admin_home_layout/patients/donors_of_patient.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';

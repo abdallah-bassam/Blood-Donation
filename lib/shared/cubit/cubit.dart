@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/screens/donor_home_layout/donor_home.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/network/remote/dio_helper.dart';

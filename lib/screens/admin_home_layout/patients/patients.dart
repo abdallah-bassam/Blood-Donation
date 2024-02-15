@@ -1,4 +1,3 @@
-import 'package:blood_donation/models/patient_model.dart';
 import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:blood_donation/shared/lists_of_patients.dart';

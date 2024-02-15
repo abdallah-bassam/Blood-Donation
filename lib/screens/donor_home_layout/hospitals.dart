@@ -2,8 +2,6 @@ import 'package:blood_donation/shared/cubit/cubit.dart';
 import 'package:blood_donation/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../models/patient_model.dart';
 import '../../shared/reusable_components.dart';
 
 class Hospitals extends StatelessWidget {

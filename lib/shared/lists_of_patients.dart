@@ -1,7 +1,5 @@
 import 'package:blood_donation/shared/reusable_components.dart';
 import 'package:flutter/material.dart';
-
-import '../models/patient_model.dart';
 import 'cubit/cubit.dart';
 
 Widget listOfSearchedPatients(context) => ListView.separated(
